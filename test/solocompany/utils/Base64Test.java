@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Base64Test.
  *
- * @author <a href="mailto:lwr@coremail.cn">William Leung</a>
+ * @author <a href="mailto:williamleung2006@gmail.com">William Leung</a>
  */
 public class Base64Test {
 
