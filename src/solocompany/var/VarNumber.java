@@ -28,6 +28,12 @@ public class VarNumber extends Variant {
 
 
     @Override
+    public String toString() {
+        return String.valueOf(impl);
+    }
+
+
+    @Override
     public int getInt() {
         if (impl >= Integer.MIN_VALUE && impl <= Integer.MAX_VALUE) {
             return (int) impl;
@@ -37,8 +43,11 @@ public class VarNumber extends Variant {
 
 
     @Override
-    public String toString() {
-        return String.valueOf(impl);
+    public long getLong() {
+        if (impl >= Long.MIN_VALUE && impl <= Long.MAX_VALUE) {
+            return (long) impl;
+        }
+        throw new IllegalStateException("Convert to long overflow: " + getDebugInfo());
     }
 
 

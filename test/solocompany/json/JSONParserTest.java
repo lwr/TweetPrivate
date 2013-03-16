@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Mailtech.cn, Ltd. All Rights Reserved.
+ * Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
  */
 
 package solocompany.json;
@@ -44,7 +44,7 @@ public class JSONParserTest {
                 + "        \"widgets\": [],\n"
                 + "        \"size\": 5\n"
                 + "    },"
-                + "    foo : '中文'\n"
+                + "    foo : '涓枃'\n"
                 + "}"
                 + "";
 
@@ -62,7 +62,7 @@ public class JSONParserTest {
             assertEquals(2, ((Map) m.get("widgets")).size());
             assertEquals(Collections.emptyList(), ((Map) m.get("widgets")).get("widgets"));
             assertEquals(5, ((Map) m.get("widgets")).get("size"));
-            assertEquals("中文", m.get("foo"));
+            assertEquals("涓枃", m.get("foo"));
         }
     }
 
@@ -71,7 +71,7 @@ public class JSONParserTest {
     public void testParseWithStream2() throws Exception {
         String s2 = ""
                 + "[\n"
-                + "    'foo' , '中文'\n"
+                + "    'foo' , '涓枃'\n"
                 + "]"
                 + "";
 
@@ -84,7 +84,7 @@ public class JSONParserTest {
 
         for (List<String> arr : arrList) {
             assertEquals("foo", arr.get(0));
-            assertEquals("中文", arr.get(1));
+            assertEquals("涓枃", arr.get(1));
         }
     }
 }

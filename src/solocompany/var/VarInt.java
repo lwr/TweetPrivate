@@ -29,14 +29,20 @@ public class VarInt extends Variant {
 
 
     @Override
+    public String toString() {
+        return String.valueOf(impl);
+    }
+
+
+    @Override
     public int getInt() {
         return impl;
     }
 
 
     @Override
-    public String toString() {
-        return String.valueOf(impl);
+    public long getLong() {
+        return impl;
     }
 
 

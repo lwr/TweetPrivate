@@ -37,14 +37,20 @@ public class VarBool extends Variant {
 
 
     @Override
+    public String toString() {
+        return String.valueOf(impl);
+    }
+
+
+    @Override
     public int getInt() {
         return impl ? 1 : 0;
     }
 
 
     @Override
-    public String toString() {
-        return String.valueOf(impl);
+    public long getLong() {
+        return impl ? 1L : 0;
     }
 
 

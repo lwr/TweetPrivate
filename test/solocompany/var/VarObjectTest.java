@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2008 Mailtech.cn, Ltd. All Rights Reserved.
+/*
+ * Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
  */
 
 package solocompany.var;

@@ -4,10 +4,15 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>
-    <title></title>
-  </head>
-  <body>
-
-  </body>
+<head>
+    <title>TweetPrivate Project Home</title>
+</head>
+<body>
+TweetPrivate Project
+<ul>
+    <li>
+        <a href="dm/index.jsp">Twitter Direct Messages</a>
+    </li>
+</ul>
+</body>
 </html>

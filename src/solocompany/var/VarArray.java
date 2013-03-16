@@ -77,6 +77,16 @@ public class VarArray extends Variant {
     }
 
 
+    public boolean addAll(VarArray a) {
+        return impl.addAll(a.impl);
+    }
+
+
+    public boolean isEmpty() {
+        return impl.isEmpty();
+    }
+
+
     public int size() {
         return impl.size();
     }

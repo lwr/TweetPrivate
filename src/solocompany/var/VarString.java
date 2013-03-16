@@ -35,6 +35,24 @@ public class VarString extends Variant {
     }
 
 
+    public int getInt() {
+        try {
+            return Integer.parseInt(impl);
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException("Convert to int failed: " + getDebugInfo());
+        }
+    }
+
+
+    public long getLong() {
+        try {
+            return Long.parseLong(impl);
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException("Convert to long failed: " + getDebugInfo());
+        }
+    }
+
+
     @Override
     public Object normalize() { return impl; }
 }

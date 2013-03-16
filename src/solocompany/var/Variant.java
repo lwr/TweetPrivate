@@ -7,6 +7,8 @@ package solocompany.var;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.*;
+
 /**
  * The general variant base class.
  *
@@ -18,8 +20,15 @@ public abstract class Variant {
     protected abstract String getTypeName();
 
 
-    public int getInt() {
-        throw new IllegalStateException("Not int type: " + getDebugInfo());
+    @NotNull
+    public List<Variant> asList() {
+        if (this instanceof VarArray) {
+            return Collections.checkedList(((VarArray) this).impl, Variant.class);
+        } else if (this instanceof VarNull) {
+            return Collections.emptyList();
+        } else {
+            return Collections.singletonList(this);
+        }
     }
 
 
@@ -27,11 +36,41 @@ public abstract class Variant {
     public VarObject getMap() {
         if (this instanceof VarObject) {
             return (VarObject) this;
-        }
-        if (this instanceof VarNull) {
+        } else if (this instanceof VarNull) {
             return VarObject.emptyMap();
+        } else {
+            throw new IllegalStateException("Not map type: " + getDebugInfo());
         }
-        throw new IllegalStateException("Not map type: " + getDebugInfo());
+    }
+
+
+    public int getInt() {
+        throw new IllegalStateException("Not number type: " + getDebugInfo());
+    }
+
+
+    public long getLong() {
+        throw new IllegalStateException("Not number type: " + getDebugInfo());
+    }
+
+
+    public String getString() {
+        return toString();
+    }
+
+
+    public int getInt(@Nullable String key) {
+        return get(key).getInt();
+    }
+
+
+    public long getLong(@Nullable String key) {
+        return get(key).getLong();
+    }
+
+
+    public String getString(@Nullable String key) {
+        return get(key).getString();
     }
 
 
@@ -124,5 +163,25 @@ public abstract class Variant {
             return ((VarObjectNormalizer) obj).impl;
         }
         throw new IllegalArgumentException("Unsupported narrow type: " + obj.getClass());
+    }
+
+    public boolean isStringType() {
+        return this instanceof VarString;
+    }
+
+    public boolean isObjectType() {
+        return this instanceof VarObject;
+    }
+
+    public boolean isArrayType() {
+        return this instanceof VarArray;
+    }
+
+    public boolean isPrimaryType() {
+        return this instanceof VarBool || this instanceof VarInt || this instanceof VarLong || this instanceof VarNumber;
+    }
+
+    public boolean isNull() {
+        return this instanceof VarNull;
     }
 }

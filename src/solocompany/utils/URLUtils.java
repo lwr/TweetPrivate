@@ -12,17 +12,17 @@ public final class URLUtils {
 
 
     /**
-     * °ÑURL¸ñÊ½²éÑ¯×Ö·û´®½âÎöÎªKV¶Ô.
-     * Èç¹ûÓĞ¶àÖµÖ»±£ÁôµÚÒ»¸ö.
+     * æŠŠURLæ ¼å¼æŸ¥è¯¢å­—ç¬¦ä¸²è§£æä¸ºKVå¯¹.
+     * å¦‚æœæœ‰å¤šå€¼åªä¿ç•™ç¬¬ä¸€ä¸ª.
      * <p/>
-     * <b>×¢Òâ:</b> ËùÓĞ·µ»ØÖµ¾ùÎ´¾­decode
+     * <b>æ³¨æ„:</b> æ‰€æœ‰è¿”å›å€¼å‡æœªç»decode
      *
-     * @param qs ÊäÈë£¬Òª½âÎöµÄ×Ö·û´®
-     * @param m  ÓÃÓÚ½ÓÊÕ½âÎö½á¹ûµÄKV¶Ô.
+     * @param qs è¾“å…¥ï¼Œè¦è§£æçš„å­—ç¬¦ä¸²
+     * @param m  ç”¨äºæ¥æ”¶è§£æç»“æœçš„KVå¯¹.
      */
     public static void parseParameters(String qs, Map<? super String, ? super String> m) {
         String[] ss = qs.split("&");
-        for (int i = ss.length - 1; i >= 0; i--) { // ·´Ïò±éÀú£¬Ê¹µÃÏÈ³öÏÖµÄÖµÓÅÏÈ
+        for (int i = ss.length - 1; i >= 0; i--) { // åå‘éå†ï¼Œä½¿å¾—å…ˆå‡ºç°çš„å€¼ä¼˜å…ˆ
             String s = ss[i];
             if (s != null && s.length() > 0) {
                 int j = s.indexOf('=');

@@ -25,6 +25,12 @@ public class VarLong extends Variant {
 
 
     @Override
+    public String toString() {
+        return String.valueOf(impl);
+    }
+
+
+    @Override
     public int getInt() {
         if (impl >= Integer.MIN_VALUE && impl <= Integer.MAX_VALUE) {
             return (int) impl;
@@ -34,8 +40,8 @@ public class VarLong extends Variant {
 
 
     @Override
-    public String toString() {
-        return String.valueOf(impl);
+    public long getLong() {
+        return impl;
     }
 
 

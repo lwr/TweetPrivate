@@ -28,8 +28,20 @@ public class VarNull extends Variant {
 
 
     @Override
+    public String toString() {
+        return "";
+    }
+
+
+    @Override
     public int getInt() {
         return 0;
+    }
+
+
+    @Override
+    public long getLong() {
+        return 0L;
     }
 
 
@@ -37,12 +49,6 @@ public class VarNull extends Variant {
     @Override
     public Variant getOrNull(@Nullable String key) {
         return null;
-    }
-
-
-    @Override
-    public String toString() {
-        return "";
     }
 
 

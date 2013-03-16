@@ -1,7 +1,3 @@
-/**
- * Copyright (c) 2006 Mailtech.cn, Ltd. All Rights Reserved.
- */
-
 package solocompany.commons.collections;
 
 import junit.framework.TestCase;

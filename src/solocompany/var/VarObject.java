@@ -73,6 +73,11 @@ public class VarObject extends Variant {
     }
 
 
+    public Set<Map.Entry<String, Variant>> entrySet() {
+        return impl.entrySet();
+    }
+
+
     @Override
     public boolean containsKey(String key) {
         return impl.containsKey(key);

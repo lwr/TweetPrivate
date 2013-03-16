@@ -25,16 +25,16 @@ public class LightweightTwitterAPI {
 
 
     /*
-        # dig µÄ½á¹û
+        # dig çš„ç»“æœ
         ;; ANSWER SECTION:
         api.twitter.com.    4       IN      A       199.59.149.232
         api.twitter.com.    4       IN      A       199.59.150.9
         api.twitter.com.    4       IN      A       199.59.148.20
 
-        # Java ²»Ö§³Ö Socks-hostname ±ØĞëÒªĞŞ¸Ä hosts ²ÅÄÜ·À DNS ÎÛÈ¾
+        # Java ä¸æ”¯æŒ Socks-hostname å¿…é¡»è¦ä¿®æ”¹ hosts æ‰èƒ½é˜² DNS æ±¡æŸ“
         sudo vi /etc/hosts
 
-        # ¼ÓÈëÕâĞĞ
+        # åŠ å…¥è¿™è¡Œ
         199.59.149.232    api.twitter.com
     */
 
@@ -53,6 +53,18 @@ public class LightweightTwitterAPI {
             public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
             }
         });
+    }
+
+
+    public String jsonAPI(String type, String body) throws IOException {
+        String qLeft = type;
+        String query = "";
+        int qMarkPosition = type.indexOf('?');
+        if (qMarkPosition != -1) {
+            qLeft = type.substring(0, qMarkPosition);
+            query = type.substring(qMarkPosition);
+        }
+        return invokeAPI(qLeft + (qLeft.endsWith(".json") ? "" : ".json") + query, body);
     }
 
 

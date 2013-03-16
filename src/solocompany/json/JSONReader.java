@@ -6,13 +6,13 @@ package solocompany.json;
 
 import solocompany.var.VarArray;
 import solocompany.var.VarBool;
-import solocompany.var.VarLong;
-import solocompany.var.VarObject;
-import solocompany.var.Variant;
 import solocompany.var.VarInt;
+import solocompany.var.VarLong;
 import solocompany.var.VarNull;
 import solocompany.var.VarNumber;
+import solocompany.var.VarObject;
 import solocompany.var.VarString;
+import solocompany.var.Variant;
 
 import java.io.*;
 

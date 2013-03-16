@@ -59,13 +59,7 @@ public class LightweightTwitterApiTest {
 
 
     public Variant jsonInvoke(String type, String body) throws IOException {
-        int qMarkPosition = type.indexOf('?');
-        if (qMarkPosition == -1) {
-            type += ".json";
-        } else {
-            type = type.substring(0, qMarkPosition) + ".json" + type.substring(qMarkPosition);
-        }
-        return new JSONParser().parseJson(api.invokeAPI(type, body));
+        return new JSONParser().parseJson(api.jsonAPI(type, body));
     }
 
 
