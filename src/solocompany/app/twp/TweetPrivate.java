@@ -76,7 +76,7 @@ public class TweetPrivate {
     }
 
 
-    public VarObject getConversionStats() throws FileNotFoundException {
+    public VarObject getConversationStats() throws FileNotFoundException {
         VarObject m = new VarObject();
         for (Variant item : new JSONParser().parseJson(new FileInputStream(inbox)).asList()) {
             String id = item.get("sender_id").toString();

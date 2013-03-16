@@ -20,7 +20,7 @@
     }
 
 
-    public void displayConversionStats(VarObject stats, JspWriter out) throws IOException {
+    public void displayConversationStats(VarObject stats, JspWriter out) throws IOException {
         String format = "%11s  %-16s  %7s  %8s  %s";
         out.println(String.format(format, "id", "screen_name", "inCount", "outCount", "name"));
         for (Map.Entry<String, Variant> e : stats.entrySet()) {
@@ -41,7 +41,7 @@
     }
 
 
-    private void displayConversion(VarArray a, JspWriter out) throws IOException {
+    private void displayConversation(VarArray a, JspWriter out) throws IOException {
         for (Variant record : a.asList()) {
             out.println(formatDate(record.getLong("date")) + " - " + record.get("sender"));
             out.println("  " + record.get("text"));
@@ -52,7 +52,7 @@
     private void run(HttpServletRequest request, JspWriter out) throws IOException {
         TweetPrivate tp = new TweetPrivate(null);
         if (request.getParameter("id") == null || request.getParameter("id").isEmpty()) {
-            displayConversionStats(tp.getConversionStats(), out);
+            displayConversationStats(tp.getConversationStats(), out);
         } else {
             out.print("<a href=\'?id=\'>Back</a>");
             out.println();
@@ -63,7 +63,7 @@
                 out.println(e);
                 return;
             }
-            displayConversion(tp.getConversation(id), out);
+            displayConversation(tp.getConversation(id), out);
         }
     }
 %>
