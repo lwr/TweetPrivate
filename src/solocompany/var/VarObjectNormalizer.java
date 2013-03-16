@@ -15,14 +15,14 @@ import java.util.*;
  *
  * @author <a href="mailto:williamleung2006@gmail.com">William Leung</a>
  */
-class VarVarObjectNormalizer extends AbstractMap<String, Object> {
+class VarObjectNormalizer extends AbstractMap<String, Object> {
 
 
     @NotNull
     VarObject impl;
 
 
-    private VarVarObjectNormalizer(VarObject impl) {
+    private VarObjectNormalizer(VarObject impl) {
         if (impl == null) {
             throw new NullPointerException();
         }
@@ -67,12 +67,12 @@ class VarVarObjectNormalizer extends AbstractMap<String, Object> {
 
     static Map<String, Object> getInstance(@NotNull VarObject impl, boolean modifiable) {
         return modifiable
-                ? new VarVarObjectNormalizer.Modifiable(impl)
-                : new VarVarObjectNormalizer(impl);
+                ? new VarObjectNormalizer.Modifiable(impl)
+                : new VarObjectNormalizer(impl);
     }
 
 
-    private static class Modifiable extends VarVarObjectNormalizer {
+    private static class Modifiable extends VarObjectNormalizer {
         Modifiable(@NotNull VarObject impl) {
             super(impl);
         }

@@ -60,23 +60,7 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$PROJECT_DIR$/src/solocompany/json/JSONException.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/src/solocompany/json/JSONParser.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/src/solocompany/json/JSONReader.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/src/solocompany/utils/Base64.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/src/solocompany/utils/URLUtils.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/src/solocompany/var/VarArrayNormalizer.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/src/solocompany/var/VarVarObjectNormalizer.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/commons/collections/AbstractTestCollection.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/commons/collections/AbstractTestIterator.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/commons/collections/AbstractTestList.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/commons/collections/AbstractTestListIterator.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/commons/collections/AbstractTestMap.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/commons/collections/AbstractTestObject.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/commons/collections/AbstractTestSet.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/commons/collections/BulkTest.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/json/JSONParserTest.java" charset="GB18030" />
-    <file url="file://$PROJECT_DIR$/test/solocompany/utils/Base64Test.java" charset="GB18030" />
+    <file url="PROJECT" charset="GB18030" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />

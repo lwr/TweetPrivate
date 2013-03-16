@@ -120,8 +120,8 @@ public abstract class Variant {
             return VarNull.INSTANCE;
         } else if (obj instanceof VarArrayNormalizer) {
             return VarArray.valueOf(((VarArrayNormalizer) obj).impl);
-        } else if (obj instanceof VarVarObjectNormalizer) {
-            return ((VarVarObjectNormalizer) obj).impl;
+        } else if (obj instanceof VarObjectNormalizer) {
+            return ((VarObjectNormalizer) obj).impl;
         }
         throw new IllegalArgumentException("Unsupported narrow type: " + obj.getClass());
     }

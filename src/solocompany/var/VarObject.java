@@ -49,7 +49,7 @@ public class VarObject extends Variant {
     @NotNull
     @Override
     public final Map<String, Object> normalize(boolean modifiable) {
-        return VarVarObjectNormalizer.getInstance(this, modifiable);
+        return VarObjectNormalizer.getInstance(this, modifiable);
     }
 
 
