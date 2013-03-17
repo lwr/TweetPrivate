@@ -76,32 +76,46 @@ public class TweetPrivate {
     }
 
 
-    public VarObject getConversationStats() throws FileNotFoundException {
+    public Variant getMyInfo() throws IOException {
+        return new JSONParser().parseJson(new FileInputStream(inbox)).get(0).get("recipient");
+    }
+
+
+    public VarObject getConversationStats() throws IOException {
         VarObject m = new VarObject();
         for (Variant item : new JSONParser().parseJson(new FileInputStream(inbox)).asList()) {
             String id = item.get("sender_id").toString();
             VarObject stat = (VarObject) m.getOrNull(id);
             if (stat == null) {
-                stat = new VarObject();
+                stat = initialStat(item.get("sender"));
                 m.put(id, stat);
-                stat.put("screen_name", item.get("sender").get("screen_name"));
-                stat.put("name", item.get("sender").get("name"));
             }
-            stat.put("inCount", stat.getInt("inCount") + 1);
+            updateLast(stat, item, "inCount", "inLast");
         }
 
         for (Variant item : new JSONParser().parseJson(new FileInputStream(outbox)).asList()) {
             String id = item.get("recipient_id").toString();
             VarObject stat = (VarObject) m.getOrNull(id);
             if (stat == null) {
-                stat = new VarObject();
+                stat = initialStat(item.get("recipient"));
                 m.put(id, stat);
-                stat.put("screen_name", item.get("recipient").get("screen_name"));
-                stat.put("name", item.get("recipient").get("name"));
             }
-            stat.put("outCount", stat.getInt("outCount") + 1);
+            updateLast(stat, item, "outCount", "outLast");
         }
         return m;
+    }
+
+    private VarObject initialStat(Variant recipient) {
+        VarObject stat = recipient.getMap().copyMap();
+        stat.put("inCount", 0);
+        stat.put("outCount", 0);
+        return stat;
+    }
+
+
+    private void updateLast(VarObject stat, Variant item, String keyForCount, String keyForDate) {
+        stat.put(keyForCount, stat.getInt(keyForCount) + 1);
+        stat.put(keyForDate, Math.max(stat.getLong(keyForDate), parseDate(item.getString("created_at"))));
     }
 
 
@@ -114,7 +128,7 @@ public class TweetPrivate {
                 continue;
             }
             VarObject record = new VarObject();
-            record.put("sender", "他");
+            record.put("type", "in");
             record.put("date", parseDate(item.getString("created_at")));
             record.put("text", item.get("text"));
             a.add(record);
@@ -125,7 +139,7 @@ public class TweetPrivate {
                 continue;
             }
             VarObject record = new VarObject();
-            record.put("sender", "我");
+            record.put("type", "out");
             record.put("date", parseDate(item.getString("created_at")));
             record.put("text", item.get("text"));
             a.add(record);

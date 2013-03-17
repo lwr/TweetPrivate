@@ -93,6 +93,12 @@ public abstract class Variant {
 
 
     @NotNull
+    public Variant get(int index) {
+        return (index == 0) ? this : VarNull.INSTANCE;
+    }
+
+
+    @NotNull
     public abstract String toString();
 
 

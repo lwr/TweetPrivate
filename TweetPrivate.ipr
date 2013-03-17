@@ -12,6 +12,9 @@
           <element id="directory" name="classes">
             <element id="javaee-facet-classes" facet="TweetPrivate/web/Web" />
           </element>
+          <element id="directory" name="lib">
+            <element id="library" level="application" name="jstl 1.2" />
+          </element>
         </element>
       </root>
     </artifact>
@@ -751,7 +754,7 @@
         </inspection_tool>
         <inspection_tool class="FinalizeNotProtected" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="FinallyBlockCannotCompleteNormally" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="Fix shebang" enabled="false" level="WARNING" enabled_by_default="false">/bin/sh#/bin/bash</inspection_tool>
+        <inspection_tool class="Fix shebang" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="FlexCssStrayBraceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="FlexUnitClassInProductSourceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="FlexUnitClassVisibilityInspection" enabled="false" level="WARNING" enabled_by_default="false" />

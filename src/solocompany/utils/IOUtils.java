@@ -13,6 +13,16 @@ import java.io.*;
  */
 public class IOUtils {
 
+    public static String fileToString(File file, String charsetName) throws IOException {
+        FileInputStream in = new FileInputStream(file);
+        try {
+            return allToString(new InputStreamReader(in, charsetName));
+        } finally {
+            in.close();
+        }
+    }
+
+
     public static String allToString(InputStream is, String charsetName) throws IOException {
         if (is instanceof ByteArrayInputStream) {
             byte[] bytes = new byte[is.available()];

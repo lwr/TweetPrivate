@@ -26,6 +26,7 @@
     <orderEntry type="library" scope="TEST" name="junit-4.10" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="annotations" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 6" level="application_server_libraries" />
+    <orderEntry type="library" name="jstl 1.2" level="application" />
   </component>
 </module>
 
