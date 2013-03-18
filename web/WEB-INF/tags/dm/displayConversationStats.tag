@@ -5,9 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%
-    solocompany.app.twp.TweetPrivate tp = new solocompany.app.twp.TweetPrivate(null);
-%>
+<%@ include file="../accessTokenManager.jspf" %>
 <div class="body_parent">
     <c:forEach items="<%= tp.getConversationStats().normalize() %>" var="entry">
         <c:set var="id" value="${entry.key}" />

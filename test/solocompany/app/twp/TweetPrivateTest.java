@@ -7,7 +7,6 @@ package solocompany.app.twp;
 import org.junit.Ignore;
 import org.junit.Test;
 import solocompany.json.JSONParser;
-import solocompany.oauth.LightweightTwitterApiTest;
 import solocompany.utils.IOUtils;
 import solocompany.var.VarObject;
 import solocompany.var.Variant;
@@ -20,9 +19,9 @@ import java.util.*;
  *
  * @author <a href="mailto:williamleung2006@gmail.com">William Leung</a>
  */
-public class TweetPrivateTest extends LightweightTwitterApiTest {
+public class TweetPrivateTest {
 
-    TweetPrivate tp = new TweetPrivate(api);
+    TweetPrivate tp = new AccessTokenManager().getMyTwitterToken().getTweetPrivate();
     PrintStream out = System.out;
 
 

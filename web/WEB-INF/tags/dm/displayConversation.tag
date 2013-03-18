@@ -1,8 +1,7 @@
 <%--
   ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
   --%>
-<%@ tag pageEncoding="UTF-8" language="java"
-        %>
+<%@ tag pageEncoding="UTF-8" language="java" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -10,6 +9,7 @@
 <p>
     <a href='?id='>Back</a>
 </p>
+<%@ include file="../accessTokenManager.jspf" %>
 <%
     long id;
     try {
@@ -18,8 +18,6 @@
         out.println(e);
         return;
     }
-
-    solocompany.app.twp.TweetPrivate tp = new solocompany.app.twp.TweetPrivate(null);
 
     java.util.HashMap<String, Object> userInfoMap = new java.util.HashMap<String, Object>();
     userInfoMap.put("in", tp.getConversationStats().get(String.valueOf(id)).normalize());

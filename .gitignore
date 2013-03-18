@@ -3,7 +3,7 @@
 
 atlassian-ide-plugin.xml
 
-test/solocompany/oauth/MyTwitterAPI.java
+src/solocompany/app/twp/MyTwitterAPI.java
 
 TweetPrivate.iws
 

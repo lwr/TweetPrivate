@@ -6,12 +6,12 @@ package solocompany.oauth;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import solocompany.app.twp.AccessTokenManager;
 import solocompany.json.JSONParser;
 import solocompany.utils.URLUtils;
 import solocompany.var.Variant;
 
 import java.io.*;
-import java.lang.reflect.Field;
 
 
 // CS:AllowPrintln
@@ -24,33 +24,7 @@ import java.lang.reflect.Field;
 public class LightweightTwitterApiTest {
 
 
-    protected LightweightTwitterAPI api;
-
-
-    public LightweightTwitterApiTest() {
-        String packageName = LightweightTwitterApiTest.class.getPackage().getName();
-        try {
-            Field apiField = Class.forName(packageName + ".MyTwitterAPI").getDeclaredField("OAUTH");
-            this.api = new LightweightTwitterAPI((OAuthTool) apiField.get(null));
-        } catch (Exception e) {
-            throw new RuntimeException(""
-                    + "Twitter api keys not found"
-                    + "\n"
-                    + "==== To make this simple test worked, you should defined your api like this: ====\n"
-                    + "package " + packageName + ";\n"
-                    + "\n"
-                    + "public class MyTwitterAPI {\n"
-                    + "\n"
-                    + "    public static OAuthTool OAUTH = OAuthTool(\n"
-                    + "            consumerKey,        // Your twitter app key\n"
-                    + "            consumerSecret,     // Your twitter app secret\n"
-                    + "            accessToken,        // Your twitter access token\n"
-                    + "            accessSecret        // your twitter access secret\n"
-                    + "    );\n"
-                    + "}\n"
-                    + "", e);
-        }
-    }
+    protected LightweightTwitterAPI api = new AccessTokenManager().getMyTwitterToken().getTwitterAPI();
 
 
     public String jsonInvokeFMT(String type, String body) throws IOException {

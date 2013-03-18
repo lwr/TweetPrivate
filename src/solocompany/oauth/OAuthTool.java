@@ -36,6 +36,21 @@ public class OAuthTool {
     }
 
 
+    public OAuthTool getAnotherToken(String accessToken, String accessSecret) {
+        return new OAuthTool(consumerKey, consumerSecret, accessToken, accessSecret);
+    }
+
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+
+    public String getAccessSecret() {
+        return accessSecret;
+    }
+
+
     public String httpRequest(URL url, String parametersForPost) throws IOException {
         HttpURLConnection conn = setupConnection((HttpURLConnection) url.openConnection(), parametersForPost);
         try {
