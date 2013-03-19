@@ -21,7 +21,7 @@ import java.util.*;
  */
 public class TweetPrivateTest {
 
-    TweetPrivate tp = new AccessTokenManager().getMyTwitterToken().getTweetPrivate();
+    TweetPrivate tp = new AccessTokenManager().getMyToken().getTweetPrivate();
     PrintStream out = System.out;
 
 

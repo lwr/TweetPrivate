@@ -69,10 +69,15 @@ public class LightweightTwitterAPI {
 
 
     public String invokeAPI(String type, String body) throws IOException {
+        return invokeAPI(type, body, null);
+    }
+
+
+    public String invokeAPI(String type, String body, String oAuthHeaders) throws IOException {
         ProxySelector proxySelector = ProxySelector.getDefault();
         configProxy();
         try {
-            return oAuthTool.httpRequest(new URL("https://api.twitter.com/" + type), body);
+            return oAuthTool.httpRequest(new URL("https://api.twitter.com/" + type), body, oAuthHeaders);
         } finally {
             ProxySelector.setDefault(proxySelector);
         }

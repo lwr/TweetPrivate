@@ -51,8 +51,8 @@ public class OAuthTool {
     }
 
 
-    public String httpRequest(URL url, String parametersForPost) throws IOException {
-        HttpURLConnection conn = setupConnection((HttpURLConnection) url.openConnection(), parametersForPost);
+    public String httpRequest(URL url, String body, String oAuthHeaders) throws IOException {
+        HttpURLConnection conn = setupConnection((HttpURLConnection) url.openConnection(), body, oAuthHeaders);
         try {
             return IOUtils.allToString(conn.getInputStream(), "UTF-8");
         } catch (IOException e) {
@@ -62,28 +62,28 @@ public class OAuthTool {
     }
 
 
-    public HttpURLConnection setupConnection(HttpURLConnection conn, String parametersForPost) throws IOException {
-        if (parametersForPost != null && parametersForPost.length() > 0) {
+    public HttpURLConnection setupConnection(HttpURLConnection conn, String body, String oAuthHeaders) throws IOException {
+        if ((oAuthHeaders != null) || (body != null && body.length() > 0)) {
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
         }
 
-        String authorizationHeader = getAuthorizationHeader(conn.getRequestMethod(), conn.getURL(), parametersForPost);
+        String authorizationHeader = getAuthorizationHeader(conn.getRequestMethod(), conn.getURL(), body, oAuthHeaders);
         conn.setRequestProperty("Authorization", authorizationHeader);
 
-        if (parametersForPost != null && parametersForPost.length() > 0) {
-            conn.getOutputStream().write(parametersForPost.getBytes("UTF-8"));
+        if (body != null && body.length() > 0) {
+            conn.getOutputStream().write(body.getBytes("UTF-8"));
             conn.getOutputStream().flush();
         }
         return conn;
     }
 
 
-    public String getAuthorizationHeader(String method, URL url, String parametersForPost) {
+    public String getAuthorizationHeader(String method, URL url, String body, String oAuthHeaders) {
         String timestamp = Long.toString(System.currentTimeMillis() / 1000);
         String nonce = Long.toHexString(System.nanoTime());
 
-        String baseString = getBaseString(url, method, parametersForPost, nonce, timestamp);
+        String baseString = getBaseString(url, method, body, nonce, timestamp, oAuthHeaders);
         String signature = getSignature(baseString);
 
         return "OAuth "
@@ -92,27 +92,34 @@ public class OAuthTool {
                 + "oauth_signature=\"" + percentEncode(signature) + "\", "
                 + "oauth_signature_method=\"" + SIGNATURE_METHOD + "\", "
                 + "oauth_timestamp=\"" + timestamp + "\", "
-                + "oauth_token=\"" + accessToken + "\", "
+                + (accessToken.length() > 0 ? "oauth_token=\"" + accessToken + "\", " : "")
+                + ((oAuthHeaders != null && oAuthHeaders.length() > 0) ? oAuthHeaders.replace("&", ", ") + ", " : "")
                 + "oauth_version=\"1.0\""
                 + "";
     }
 
 
-    private String getBaseString(URL url, String method, String parametersForPost, String nonce, String timestamp) {
+    private String getBaseString(URL url, String method, String body, String nonce, String timestamp, String oAuthHeaders) {
         HashMap<String, String> rawParameterMap = new HashMap<String, String>();
         rawParameterMap.put("oauth_consumer_key", consumerKey);
         rawParameterMap.put("oauth_nonce", nonce);
         rawParameterMap.put("oauth_signature_method", SIGNATURE_METHOD);
         rawParameterMap.put("oauth_timestamp", timestamp);
-        rawParameterMap.put("oauth_token", accessToken);
+        if (accessToken.length() > 0) {
+            rawParameterMap.put("oauth_token", accessToken);
+        }
         rawParameterMap.put("oauth_version", "1.0");
 
         if (url.getQuery() != null) {
             URLUtils.parseParameters(url.getQuery(), rawParameterMap);
         }
 
-        if (parametersForPost != null) {
-            URLUtils.parseParameters(parametersForPost, rawParameterMap);
+        if (body != null) {
+            URLUtils.parseParameters(body, rawParameterMap);
+        }
+
+        if (oAuthHeaders != null) {
+            URLUtils.parseParameters(oAuthHeaders, rawParameterMap);
         }
 
         return percentEncode(method.toUpperCase())

@@ -20,57 +20,85 @@ public class AccessTokenManager {
 
     File tokenDataFile = new File(System.getProperty("user.home"), ".TwitterData/token.data");
 
-    volatile OAuthTool myToken;
+    volatile OAuthTool myTwitter;
 
-    final Properties tokenMap = new Properties();
+    final Map<String, AccessToken> tokenMap = new HashMap<String, AccessToken>();
 
 
     @NotNull
-    public AccessToken getMyTwitterToken() {
-        return getTwitterToken(getMyTwitter().getAccessToken());
+    public AccessToken getMyToken() {
+        return getToken(getMyTwitter().getAccessToken());
     }
 
 
     @NotNull
-    public AccessToken getTwitterToken(String accessToken) {
+    public AccessToken getToken(String accessToken) {
         if (tokenMap.isEmpty()) {
-            loadAccessTokens();
-            tokenMap.put(getMyTwitter().getAccessToken(), getMyTwitter().getAccessSecret());
+            loadTokens();
         }
-        return new AccessToken(this, accessToken, tokenMap.getProperty(accessToken));
+        AccessToken result = tokenMap.get(accessToken);
+        if (result != null) {
+            return result;
+        }
+        return newToken(accessToken, null, false);
     }
 
 
-    private void loadAccessTokens() {
+    public AccessToken getToken(String accessToken, String secret) {
+        if (tokenMap.isEmpty()) {
+            loadTokens();
+        }
+        return newToken(accessToken, secret, true);
+    }
+
+
+    private AccessToken newToken(String accessToken, String secret, boolean putToCache) {
+        AccessToken result = new AccessToken(this, accessToken, secret);
+        if (putToCache) {
+            tokenMap.put(accessToken, result);
+        }
+        return result;
+    }
+
+
+    private void loadTokens() {
+        Properties properties = new Properties();
         try {
             InputStream in = new FileInputStream(tokenDataFile);
             try {
-                tokenMap.load(in);
+                properties.load(in);
             } finally {
                 in.close();
             }
         } catch (IOException e) {
             // ignore;
         }
-    }
-
-
-    @NotNull
-    public OAuthTool getMyTwitter() {
-        if (myToken == null) {
-            myToken = retrieveMyTwitter(new File(tokenDataFile, "../app_key.properties"));
+        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+            newToken((String) entry.getKey(), (String) entry.getValue(), true);
         }
-        return myToken;
+
+        newToken(getMyTwitter().getAccessToken(), getMyTwitter().getAccessSecret(), true);
+        newToken("", "", true);
     }
 
 
     @NotNull
-    private OAuthTool retrieveMyTwitter(File consumerKeyFile) {
+    OAuthTool getMyTwitter() {
+        if (myTwitter == null) {
+            myTwitter = retrieveMyTwitter();
+        }
+        return myTwitter;
+    }
+
+
+    @NotNull
+    private OAuthTool retrieveMyTwitter() {
         String packageName = AccessTokenManager.class.getPackage().getName();
         try {
             java.lang.reflect.Field apiField = Class.forName(packageName + ".MyTwitterAPI").getDeclaredField("OAUTH");
             return (OAuthTool) apiField.get(null);
         } catch (Exception e) {
+            File consumerKeyFile = new File(tokenDataFile, "../app_key.properties");
             Properties properties = new Properties();
             try {
                 InputStream in = new FileInputStream(consumerKeyFile);

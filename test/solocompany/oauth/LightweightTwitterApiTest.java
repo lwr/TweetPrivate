@@ -24,7 +24,7 @@ import java.io.*;
 public class LightweightTwitterApiTest {
 
 
-    protected LightweightTwitterAPI api = new AccessTokenManager().getMyTwitterToken().getTwitterAPI();
+    protected LightweightTwitterAPI api = new AccessTokenManager().getMyToken().getTwitterAPI();
 
 
     public String jsonInvokeFMT(String type, String body) throws IOException {
