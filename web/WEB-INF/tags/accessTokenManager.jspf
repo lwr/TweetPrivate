@@ -1,4 +1,0 @@
-<jsp:useBean id="accessTokenManager" scope="application" class="solocompany.app.twp.AccessTokenManager" />
-<%
-    solocompany.app.twp.TweetPrivate tp = accessTokenManager.getMyToken().getTweetPrivate();
-%>

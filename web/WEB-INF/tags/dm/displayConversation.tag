@@ -1,25 +1,13 @@
+<%@ tag pageEncoding="UTF-8" language="java" %>
+<%@ include file="/WEB-INF/include/prelude.jspf" %>
+<%@ attribute name="id" type="java.lang.Long" required="true" %>
 <%--
   ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
   --%>
-<%@ tag pageEncoding="UTF-8" language="java" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<p>
-    <a href='?id='>Back</a>
-</p>
-<%@ include file="../accessTokenManager.jspf" %>
 <%
-    long id;
-    try {
-        id = Long.parseLong(request.getParameter("id"));
-    } catch (NumberFormatException e) {
-        out.println(e);
-        return;
-    }
-
     java.util.HashMap<String, Object> userInfoMap = new java.util.HashMap<String, Object>();
+    solocompany.app.twp.TweetPrivate tp = tc.getCurrentToken().getTweetPrivate();
     userInfoMap.put("in", tp.getConversationStats().get(String.valueOf(id)).normalize());
     userInfoMap.put("out", tp.getMyInfo().normalize());
 %>

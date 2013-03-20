@@ -1,0 +1,13 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ROOT" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="dm" tagdir="/WEB-INF/tags/dm" %>
+<%--
+  ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
+  --%>
+
+<ROOT:init />
+<jsp:useBean id="tc" type="solocompany.app.twp.TWPContext" scope="request" />
+
+

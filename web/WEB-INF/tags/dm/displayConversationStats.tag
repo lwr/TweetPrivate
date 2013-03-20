@@ -1,11 +1,12 @@
+<%@ tag pageEncoding="UTF-8" language="java" %>
+<%@ include file="/WEB-INF/include/prelude.jspf" %>
 <%--
   ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
   --%>
-<%@ tag pageEncoding="UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="../accessTokenManager.jspf" %>
+
+<%
+    solocompany.app.twp.TweetPrivate tp = tc.getCurrentToken().getTweetPrivate();
+%>
 <div class="body_parent">
     <c:forEach items="<%= tp.getConversationStats().normalize() %>" var="entry">
         <c:set var="id" value="${entry.key}" />

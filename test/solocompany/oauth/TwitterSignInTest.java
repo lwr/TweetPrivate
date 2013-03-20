@@ -4,6 +4,8 @@
 
 package solocompany.oauth;
 
+import org.junit.Ignore;
+import org.junit.Test;
 import solocompany.app.twp.AccessTokenManager;
 import solocompany.json.JSONParser;
 import solocompany.utils.URLUtils;
@@ -49,6 +51,28 @@ public class TwitterSignInTest {
                 api.oAuthTool.getAnotherToken(m2.getString("oauth_token"), m2.getString("oauth_token_secret")));
         System.out.println("== 1.1/account/verify_credentials ==\n"
                 + new JSONParser().parseJson(api.jsonAPI("1.1/account/verify_credentials", "")).getDebugInfo());
+
+    }
+
+
+    @Ignore
+    @Test
+    public void testAuthCallback() throws Exception {
+        AccessTokenManager manager = new AccessTokenManager();
+        LightweightTwitterAPI api = manager.getToken("").getTwitterAPI();
+
+        // 第一步，通过 request_token 获取临时 token，定制 url
+        VarObject m1 = new VarObject();
+        URLUtils.parseParameters(api.invokeAPI("oauth/request_token", "", "oauth_callback="
+                + URLUtils.simpleEncode("http://127.0.0.1/auth/twitter/callback")), m1.normalize());
+        System.out.println("== auth/request_token ==\n" + m1.getDebugInfo());
+
+        // 第二步，访问 Twitter API 官方网站获取授权
+        //         如果是 oob 方式，则显示一个授权校验码
+        //         如果是 url 方式，则直接回掉 url 同时传递校验码参数
+        //                url?oauth_token=***&oauth_verifier=***
+        System.out.println("Please visit this page to finish authorization");
+        System.out.println("https://api.twitter.com/oauth/authenticate?oauth_token=" + m1.getString("oauth_token"));
 
     }
 }

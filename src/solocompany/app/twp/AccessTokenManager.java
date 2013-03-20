@@ -5,6 +5,7 @@
 package solocompany.app.twp;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import solocompany.oauth.OAuthTool;
 
 import java.io.*;
@@ -18,50 +19,85 @@ import java.util.*;
 public class AccessTokenManager {
 
 
-    File tokenDataFile = new File(System.getProperty("user.home"), ".TwitterData/token.data");
+    File tokenDataFile = new File(System.getProperty("user.home"), ".TwitterData/token.properties");
+    Writer tokenDateOS;
 
     volatile OAuthTool myTwitter;
 
-    final Map<String, AccessToken> tokenMap = new HashMap<String, AccessToken>();
+    private Map<String, AccessToken> tokenMap = null;
 
 
     @NotNull
     public AccessToken getMyToken() {
-        return getToken(getMyTwitter().getAccessToken());
+        return getToken(getMyTwitter().getAccessToken(), getMyTwitter().getAccessSecret());
     }
 
 
     @NotNull
-    public AccessToken getToken(String accessToken) {
-        if (tokenMap.isEmpty()) {
+    public AccessToken getToken(@NotNull String token) {
+        return doGetToken(token, null);
+    }
+
+
+    @NotNull
+    public AccessToken getToken(@NotNull String token, @NotNull String secret) {
+        return doGetToken(token, secret);
+    }
+
+
+    private AccessToken doGetToken(@NotNull String token, @Nullable String secret) {
+        if (tokenMap == null) {
             loadTokens();
         }
-        AccessToken result = tokenMap.get(accessToken);
-        if (result != null) {
+
+        AccessToken result = tokenMap.get(token);
+        if (result != null && (secret == null || result.secret.equals(secret))) {
+            // return from cache
+            return result;
+
+        } else if (secret == null) {
+            // return a dummy
+            return new AccessToken(this, token, "");
+
+        } else {
+            // add to cache
+            result = new AccessToken(this, token, secret); // replace the token
+            tokenMap.put(token, result);
+            appendToken(token, secret);
             return result;
         }
-        return newToken(accessToken, null, false);
     }
 
 
-    public AccessToken getToken(String accessToken, String secret) {
-        if (tokenMap.isEmpty()) {
-            loadTokens();
+    void revokeToken(String token) {
+        if (tokenMap != null) {
+            tokenMap.remove(token);
         }
-        return newToken(accessToken, secret, true);
     }
 
 
-    private AccessToken newToken(String accessToken, String secret, boolean putToCache) {
-        AccessToken result = new AccessToken(this, accessToken, secret);
-        if (putToCache) {
-            tokenMap.put(accessToken, result);
+    private synchronized void appendToken(String token, String secret) {
+        try {
+            if (tokenDateOS == null) {
+                //noinspection ResultOfMethodCallIgnored
+                tokenDataFile.getParentFile().mkdirs();
+                tokenDateOS = new OutputStreamWriter(new FileOutputStream(tokenDataFile), "ISO-8859-1");
+            }
+            tokenDateOS.write(token + ' ' + secret + '\n');
+            tokenDateOS.flush();
+        } catch (IOException e) {
+            PrintStream out = System.err;
+            out.println("Write token failed: " + token);
+            e.printStackTrace(out);
         }
-        return result;
     }
 
 
-    private void loadTokens() {
+    private synchronized void loadTokens() {
+        if (tokenMap != null) {
+            return;
+        }
+
         Properties properties = new Properties();
         try {
             InputStream in = new FileInputStream(tokenDataFile);
@@ -73,12 +109,14 @@ public class AccessTokenManager {
         } catch (IOException e) {
             // ignore;
         }
-        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-            newToken((String) entry.getKey(), (String) entry.getValue(), true);
-        }
 
-        newToken(getMyTwitter().getAccessToken(), getMyTwitter().getAccessSecret(), true);
-        newToken("", "", true);
+        Map<String, AccessToken> tokenMap = new HashMap<String, AccessToken>();
+        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+            AccessToken token = new AccessToken(this, (String) entry.getKey(), (String) entry.getValue());
+            tokenMap.put(token.getToken(), token);
+        }
+        tokenMap.put("", new AccessToken(this, "", ""));
+        this.tokenMap = Collections.synchronizedMap(tokenMap);
     }
 
 
@@ -138,4 +176,5 @@ public class AccessTokenManager {
                     + "", e);
         }
     }
+
 }
