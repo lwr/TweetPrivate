@@ -6,7 +6,6 @@ package solocompany.oauth;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import solocompany.app.twp.AccessTokenManager;
 import solocompany.json.JSONParser;
 import solocompany.utils.URLUtils;
 import solocompany.var.VarObject;
@@ -21,8 +20,8 @@ import java.io.*;
 public class TwitterSignInTest {
 
     public static void main(String[] args) throws IOException {
-        AccessTokenManager manager = new AccessTokenManager();
-        LightweightTwitterAPI api = manager.getToken("").getTwitterAPI();
+        TwitterConfig config = TwitterConfig.getInstance();
+        LightweightTwitterAPI api = config.getAPI("", "");
 
         // 第一步，通过 request_token 获取临时 token，回掉 oob 或者是定制 url （如果是定制 url 需要授权域名）
         VarObject m1 = new VarObject();
@@ -41,14 +40,13 @@ public class TwitterSignInTest {
         System.out.println("The PIN is " + pin);
 
         // 第三步，通过 access_token 获取真正的授权 token 及 secret
-        api = manager.getToken(m1.getString("oauth_token"), m1.getString("oauth_token_secret")).getTwitterAPI();
+        api = config.getAPI(m1.getString("oauth_token"), m1.getString("oauth_token_secret"));
         VarObject m2 = new VarObject();
         URLUtils.parseParameters(api.invokeAPI("oauth/access_token", "oauth_verifier=" + pin), m2.normalize());
         System.out.println("== oauth/access_token ==\n" + m2.getDebugInfo());
 
         // 最后，校验得到的 token 和 secret 是否可用
-        api = new LightweightTwitterAPI(
-                api.oAuthTool.getAnotherToken(m2.getString("oauth_token"), m2.getString("oauth_token_secret")));
+        api = config.getAPI(m2.getString("oauth_token"), m2.getString("oauth_token_secret"));
         System.out.println("== 1.1/account/verify_credentials ==\n"
                 + new JSONParser().parseJson(api.jsonAPI("1.1/account/verify_credentials", "")).getDebugInfo());
 
@@ -58,8 +56,8 @@ public class TwitterSignInTest {
     @Ignore
     @Test
     public void testAuthCallback() throws Exception {
-        AccessTokenManager manager = new AccessTokenManager();
-        LightweightTwitterAPI api = manager.getToken("").getTwitterAPI();
+        TwitterConfig config = TwitterConfig.getInstance();
+        LightweightTwitterAPI api = config.getAPI("", "");
 
         // 第一步，通过 request_token 获取临时 token，定制 url
         VarObject m1 = new VarObject();

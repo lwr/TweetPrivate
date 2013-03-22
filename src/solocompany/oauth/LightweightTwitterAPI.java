@@ -15,12 +15,13 @@ import java.util.*;
  */
 public class LightweightTwitterAPI {
 
-
     final OAuthTool oAuthTool;
+    final TwitterConfig config;
 
 
-    public LightweightTwitterAPI(OAuthTool oAuthTool) {
+    LightweightTwitterAPI(OAuthTool oAuthTool, TwitterConfig config) {
         this.oAuthTool = oAuthTool;
+        this.config = config;
     }
 
 
@@ -29,25 +30,12 @@ public class LightweightTwitterAPI {
     }
 
 
-    /*
-        # dig 的结果
-        ;; ANSWER SECTION:
-        api.twitter.com.    4       IN      A       199.59.149.232
-        api.twitter.com.    4       IN      A       199.59.150.9
-        api.twitter.com.    4       IN      A       199.59.148.20
-
-        # Java 不支持 Socks-hostname 必须要修改 hosts 才能防 DNS 污染
-        sudo vi /etc/hosts
-
-        # 加入这行
-        199.59.149.232    api.twitter.com
-    */
+    public String getAccessSecret() {
+        return oAuthTool.getAccessSecret();
+    }
 
 
-    private void configProxy() {
-        final List<Proxy> proxyList = Collections.singletonList(new Proxy(Proxy.Type.SOCKS,
-                new InetSocketAddress("127.0.0.1", 7070)));
-
+    private static void configProxy(final List<Proxy> proxyList) {
         ProxySelector.setDefault(new ProxySelector() {
             @Override
             public List<Proxy> select(URI uri) {
@@ -79,12 +67,18 @@ public class LightweightTwitterAPI {
 
 
     public String invokeAPI(String type, String body, String oAuthHeaders) throws IOException {
-        ProxySelector proxySelector = ProxySelector.getDefault();
-        configProxy();
+        ProxySelector proxySelector = null;
+        if (config != null && config.proxyList != null) {
+            proxySelector = ProxySelector.getDefault();
+            configProxy(config.proxyList);
+        }
+
         try {
             return oAuthTool.httpRequest(new URL("https://api.twitter.com/" + type), body, oAuthHeaders);
         } finally {
-            ProxySelector.setDefault(proxySelector);
+            if (proxySelector != null) {
+                ProxySelector.setDefault(proxySelector);
+            }
         }
     }
 }

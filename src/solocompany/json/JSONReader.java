@@ -374,7 +374,7 @@ class JSONReader {
      * value are both non-null, and only if there is not already a member
      * with that name.
      *
-     * @throws solocompany.json.JSONException if the key is a duplicate
+     * @throws JSONException if the key is a duplicate
      */
     private static void putOnce(VarObject m, String key, Variant value) throws JSONException {
         if (key != null && value != null) {

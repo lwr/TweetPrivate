@@ -8,6 +8,7 @@ import solocompany.commons.collections.MapFieldComparator;
 import solocompany.json.JSONParser;
 import solocompany.json.JSONWriter;
 import solocompany.oauth.LightweightTwitterAPI;
+import solocompany.oauth.TwitterConfig;
 import solocompany.var.VarArray;
 import solocompany.var.VarObject;
 import solocompany.var.Variant;
@@ -39,7 +40,7 @@ public class TweetPrivate {
 
 
     private File getDataFile() throws IOException {
-        return new File(System.getProperty("user.home"), ".TwitterData/" + getUserId() + ".json");
+        return TwitterConfig.getConfigFile(getUserId() + ".json");
     }
 
 

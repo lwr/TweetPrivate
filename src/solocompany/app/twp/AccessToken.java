@@ -53,7 +53,7 @@ public class AccessToken {
 
     public TweetPrivate getTweetPrivate() {
         if (tp == null) {
-            tp = new TweetPrivate(new LightweightTwitterAPI(manager.getMyTwitter().getAnotherToken(token, secret)));
+            tp = new TweetPrivate(manager.getConfig().getAPI(token, secret));
         }
         return tp;
     }

@@ -7,6 +7,7 @@ package solocompany.app.twp;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import solocompany.oauth.TwitterConfig;
 import solocompany.var.VarObject;
 import solocompany.var.Variant;
 
@@ -20,8 +21,14 @@ import java.util.*;
  */
 public class TweetPrivateTest {
 
-    TweetPrivate tp = new AccessTokenManager().getMyToken().getTweetPrivate();
+    TweetPrivate tp;
     PrintStream out = System.out;
+
+    public TweetPrivateTest() {
+        AccessTokenManager manager = new AccessTokenManager();
+        TwitterConfig config = manager.getConfig();
+        tp = manager.getToken(config.getAPI().getAccessToken(), config.getAPI().getAccessSecret()).getTweetPrivate();
+    }
 
 
     @Before

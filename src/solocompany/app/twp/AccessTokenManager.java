@@ -6,7 +6,7 @@ package solocompany.app.twp;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import solocompany.oauth.OAuthTool;
+import solocompany.oauth.TwitterConfig;
 
 import java.io.*;
 import java.util.*;
@@ -19,17 +19,20 @@ import java.util.*;
 public class AccessTokenManager {
 
 
-    File tokenDataFile = new File(System.getProperty("user.home"), ".TwitterData/token.properties");
+    File tokenDataFile = TwitterConfig.getConfigFile("token.properties");
     Writer tokenDateOS;
 
-    volatile OAuthTool myTwitter;
+    volatile TwitterConfig config;
 
     private Map<String, AccessToken> tokenMap = null;
 
 
     @NotNull
-    public AccessToken getMyToken() {
-        return getToken(getMyTwitter().getAccessToken(), getMyTwitter().getAccessSecret());
+    public TwitterConfig getConfig() {
+        if (config == null) {
+            config = TwitterConfig.getInstance();
+        }
+        return config;
     }
 
 
@@ -127,63 +130,4 @@ public class AccessTokenManager {
         tokenMap.put("", new AccessToken(this, "", ""));
         this.tokenMap = Collections.synchronizedMap(tokenMap);
     }
-
-
-    @NotNull
-    OAuthTool getMyTwitter() {
-        if (myTwitter == null) {
-            myTwitter = retrieveMyTwitter();
-        }
-        return myTwitter;
-    }
-
-
-    @NotNull
-    private OAuthTool retrieveMyTwitter() {
-        String packageName = AccessTokenManager.class.getPackage().getName();
-        try {
-            java.lang.reflect.Field apiField = Class.forName(packageName + ".MyTwitterAPI").getDeclaredField("OAUTH");
-            return (OAuthTool) apiField.get(null);
-        } catch (Exception e) {
-            File consumerKeyFile = new File(tokenDataFile, "../app_key.properties");
-            Properties properties = new Properties();
-            try {
-                InputStream in = new FileInputStream(consumerKeyFile);
-                try {
-                    properties.load(in);
-                } finally {
-                    in.close();
-                }
-            } catch (IOException e1) {
-                // ignore;
-            }
-
-            final String consumerKey = properties.getProperty("consumerKey");
-            final String consumerSecret = properties.getProperty("consumerSecret");
-            if (consumerKey != null && consumerSecret != null) {
-                return new OAuthTool(consumerKey, consumerSecret,
-                        properties.getProperty("accessToken"),
-                        properties.getProperty("accessSecret"));
-            }
-
-
-            throw new RuntimeException(""
-                    + "Twitter api keys not found"
-                    + "\n"
-                    + "==== To make this simple test worked, you should defined your api like this: ====\n"
-                    + "package " + packageName + ";\n"
-                    + "\n"
-                    + "public class MyTwitterAPI {\n"
-                    + "\n"
-                    + "    public static OAuthTool OAUTH = OAuthTool(\n"
-                    + "            consumerKey,        // Your twitter app key\n"
-                    + "            consumerSecret,     // Your twitter app secret\n"
-                    + "            accessToken,        // Your twitter access token\n"
-                    + "            accessSecret        // your twitter access secret\n"
-                    + "    );\n"
-                    + "}\n"
-                    + "", e);
-        }
-    }
-
 }
