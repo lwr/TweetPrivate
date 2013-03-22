@@ -24,6 +24,11 @@ public class LightweightTwitterAPI {
     }
 
 
+    public String getAccessToken() {
+        return oAuthTool.getAccessToken();
+    }
+
+
     /*
         # dig 的结果
         ;; ANSWER SECTION:

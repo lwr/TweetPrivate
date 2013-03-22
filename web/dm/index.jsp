@@ -1,5 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
-<%@ include file="/WEB-INF/include/pageDefaults.jspf" %>
+<%@ include file="/WEB-INF/include/pageDefaultsCheck.jspf" %>
 
 <%--
   ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com

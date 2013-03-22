@@ -22,10 +22,11 @@ b {
 }
 
 .avatar {
-    float: left;
+    display: block;
+    position: absolute;
     width: 48px;
     height: 48px;
-    margin-right: 5px;
+    margin: 5px;
 }
 
 .fullname {
@@ -49,13 +50,23 @@ b {
     margin-left: 15px;
 }
 
+.dm_conversion .tweet-head * {
+    color: #CCC!important;
+}
+
+.tweet-head, .tweet-text, .tweet-text-normal {
+    position: relative;
+    left: 60px;
+    margin: 0;
+}
+
 .tweet-text {
     white-space: pre-wrap;
 }
 
 .tweet-text, .tweet-text-normal {
     word-wrap: break-word;
-    margin: 10px;
+    margin: 5px;
     font-size: small;
 }
 

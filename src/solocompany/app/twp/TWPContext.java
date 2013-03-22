@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * RequestBean.
  *
- * @author <a href="mailto:lwr@coremail.cn">William Leung</a>
+ * @author <a href="mailto:williamleung2006@gmail.com">William Leung</a>
  */
 public class TWPContext {
 

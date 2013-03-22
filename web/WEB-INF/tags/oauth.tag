@@ -39,7 +39,7 @@
         URLUtils.parseParameters(api.invokeAPI("oauth/request_token", "",
                 "oauth_callback=" + URLUtils.simpleEncode(callbackURL)), m.normalize());
 
-        AccessToken token = tc.getAccessTokenManager().getToken(
+        AccessToken token = tc.getAccessTokenManager().getTemporaryToken(
                 m.getString("oauth_token"),
                 m.getString("oauth_token_secret"));
 

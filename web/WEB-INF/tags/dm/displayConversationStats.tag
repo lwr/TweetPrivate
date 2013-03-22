@@ -16,21 +16,23 @@
                 solocompany.var.Variant.wrap(jspContext.getAttribute("item"));%>
         <div class="content">
             <img class="avatar" src="${item['profile_image_url_https']}" alt="${nameX}" />
-            <span class="fullname">${nameX}</span>
-            <span class="username">
-                <s>@</s>
-                <b>${item['screen_name']}</b>
-            </span>
-            <span class="date">
-                <% long lastDate = Math.max(x.getLong("inLast"), x.getLong("outLast")); %>
-                <fmt:formatDate type="both" dateStyle="long" value='<%= new java.util.Date(lastDate) %>' />
-            </span>
-            <a href="?id=${id}">
-                <p class="tweet-text-normal">
+            <p class="tweet-head">
+                <span class="fullname">${nameX}</span>
+                <span class="username">
+                    <s>@</s>
+                    <b>${item['screen_name']}</b>
+                </span>
+                <span class="date">
+                    <% long lastDate = Math.max(x.getLong("inLast"), x.getLong("outLast")); %>
+                    <fmt:formatDate type="both" dateStyle="long" value='<%= new java.util.Date(lastDate) %>' />
+                </span>
+            </p>
+            <p class="tweet-text-normal">
+                <a href="?id=${id}">
                     共收到 <%= x.getInt("inCount") %> 条,
                     发出 <%= x.getInt("outCount") %> 条,
-                </p>
-            </a>
+                </a>
+            </p>
         </div>
     </c:forEach>
 </div>

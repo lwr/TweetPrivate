@@ -4,10 +4,8 @@
 
 package solocompany.app.twp;
 
-import solocompany.json.JSONParser;
 import solocompany.oauth.LightweightTwitterAPI;
 import solocompany.utils.Hex;
-import solocompany.var.VarObject;
 
 import java.io.*;
 import java.security.MessageDigest;
@@ -16,7 +14,7 @@ import java.util.*;
 /**
  * AccessToken.
  *
- * @author <a href="mailto:lwr@coremail.cn">William Leung</a>
+ * @author <a href="mailto:williamleung2006@gmail.com">William Leung</a>
  */
 public class AccessToken {
 
@@ -25,7 +23,7 @@ public class AccessToken {
     final String token;
     final String secret;
 
-    private volatile transient LightweightTwitterAPI api;
+    private volatile transient TweetPrivate tp;
 
 
     public AccessToken(AccessTokenManager manager, String token, String secret) {
@@ -50,16 +48,16 @@ public class AccessToken {
     }
 
 
-    public TweetPrivate getTweetPrivate() {
-        return new TweetPrivate(getTwitterAPI());
+    public LightweightTwitterAPI getTwitterAPI() {
+        return getTweetPrivate().api;
     }
 
 
-    public LightweightTwitterAPI getTwitterAPI() {
-        if (api == null) {
-            api = new LightweightTwitterAPI(manager.getMyTwitter().getAnotherToken(token, secret));
+    public TweetPrivate getTweetPrivate() {
+        if (tp == null) {
+            tp = new TweetPrivate(new LightweightTwitterAPI(manager.getMyTwitter().getAnotherToken(token, secret)));
         }
-        return api;
+        return tp;
     }
 
 
@@ -76,12 +74,7 @@ public class AccessToken {
     }
 
 
-    VarObject profile;
-
     public Map<String, Object> getProfile() throws IOException {
-        if (profile == null) {
-            profile = new JSONParser().parseJson(getTwitterAPI().jsonAPI("1.1/account/verify_credentials", "")).getMap();
-        }
-        return profile.normalize();
+        return getTweetPrivate().getProfile().normalize();
     }
 }

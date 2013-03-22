@@ -14,7 +14,7 @@ import java.util.*;
 /**
  * AccessTokenManager.
  *
- * @author <a href="mailto:lwr@coremail.cn">William Leung</a>
+ * @author <a href="mailto:williamleung2006@gmail.com">William Leung</a>
  */
 public class AccessTokenManager {
 
@@ -35,23 +35,30 @@ public class AccessTokenManager {
 
     @NotNull
     public AccessToken getToken(@NotNull String token) {
-        return doGetToken(token, null);
+        return doGetToken(false, token, null);
     }
 
 
     @NotNull
     public AccessToken getToken(@NotNull String token, @NotNull String secret) {
-        return doGetToken(token, secret);
+        return doGetToken(false, token, secret);
     }
 
 
-    private AccessToken doGetToken(@NotNull String token, @Nullable String secret) {
+    @NotNull
+    public AccessToken getTemporaryToken(@NotNull String token, @NotNull String secret) {
+        return doGetToken(true, token, secret);
+    }
+
+
+    private AccessToken doGetToken(boolean temporary, @NotNull String token, @Nullable String secret) {
         if (tokenMap == null) {
             loadTokens();
         }
 
         AccessToken result = tokenMap.get(token);
-        if (result != null && (secret == null || result.secret.equals(secret))) {
+        if ((result != null)
+                && (secret == null || result.secret.equals(secret))) {
             // return from cache
             return result;
 
@@ -60,10 +67,12 @@ public class AccessTokenManager {
             return new AccessToken(this, token, "");
 
         } else {
-            // add to cache
-            result = new AccessToken(this, token, secret); // replace the token
+            // add to cache (replace the token)
+            result = new AccessToken(this, token, secret);
             tokenMap.put(token, result);
-            appendToken(token, secret);
+            if (!temporary) {
+                appendToken(token, secret);
+            }
             return result;
         }
     }

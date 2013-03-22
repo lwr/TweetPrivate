@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2008 Mailtech.cn, Ltd. All Rights Reserved.
+/*
+ * Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
  */
 
 package solocompany.oauth;
@@ -16,7 +16,7 @@ import java.io.*;
 /**
  * TwitterSignInTest.
  *
- * @author <a href="mailto:lwr@coremail.cn">William Leung</a>
+ * @author <a href="mailto:williamleung2006@gmail.com">William Leung</a>
  */
 public class TwitterSignInTest {
 

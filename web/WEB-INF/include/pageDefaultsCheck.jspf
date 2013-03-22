@@ -1,0 +1,8 @@
+<%@ page session="false" contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/include/prelude.jspf" %>
+<%--
+  ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
+  --%>
+
+<ROOT:restoreToken check="true" />
+<% out.clear(); %>

@@ -28,9 +28,9 @@ public class TweetPrivate {
 
     protected LightweightTwitterAPI api;
 
-
-    File inbox = new File(System.getProperty("user.home"), "Downloads/TwitterData/direct messages/inbox.json");
-    File outbox = new File(System.getProperty("user.home"), "Downloads/TwitterData/direct messages/outbox.json");
+    boolean saveData = false;
+    boolean dataLoaded = false;
+    VarObject data = new VarObject();
 
 
     public TweetPrivate(LightweightTwitterAPI api) {
@@ -38,17 +38,91 @@ public class TweetPrivate {
     }
 
 
-    public void downloadDirectMessages() throws Exception {
-        downloadTo("1.1/direct_messages", inbox);
-        downloadTo("1.1/direct_messages/sent", outbox);
+    private File getDataFile() throws IOException {
+        return new File(System.getProperty("user.home"), ".TwitterData/" + getUserId() + ".json");
     }
 
 
-    public void downloadTo(String apiPrefix, File file) throws IOException {
-        if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
-            throw new IOException("Make dir failed: " + file.getParent());
+    public long getUserId() throws IOException {
+        if (!data.containsKey("profile")) {
+            // try to retrieve id from token
+            String token = api.getAccessToken();
+            int i = token.indexOf('-');
+            if (i > 0) {
+                try {
+                    return Long.parseLong(token.substring(0, i));
+                } catch (NumberFormatException e) {
+                    // ignore;
+                }
+            }
+            updateProfile();
         }
+        return data.get("profile").getLong("id");
+    }
 
+
+    public void updateProfile() throws IOException {
+        data.put("profile", new JSONParser().parseJson(api.jsonAPI("1.1/account/verify_credentials", "")).getMap());
+        saveData();
+    }
+
+
+    public VarObject getProfile() throws IOException {
+        if (!loadData("profile").isObjectType()) {
+            updateProfile();
+        }
+        return data.get("profile").getMap();
+    }
+
+
+    private Variant loadData(String key) throws IOException {
+        if (!data.containsKey(key)) {
+            loadData();
+        }
+        return data.get(key);
+    }
+
+
+    void loadData() throws IOException {
+        if (getDataFile().isFile()) {
+            saveData = true;
+            InputStream in = new FileInputStream(getDataFile());
+            try {
+                VarObject map = new JSONParser().parseJson(in).getMap();
+                map.putAll(data);
+                data = map;
+            } finally {
+                in.close();
+            }
+        }
+        dataLoaded = true;
+    }
+
+
+    void saveData() throws IOException {
+        if (!dataLoaded) {
+            loadData();
+        }
+        if (saveData) {
+            System.out.println("Writing to: " + getDataFile());
+            Writer os = new OutputStreamWriter(new FileOutputStream(getDataFile()), "UTF-8");
+            try {
+                new JSONWriter(os).writeVariant(data);
+            } finally {
+                os.close();
+            }
+        }
+    }
+
+
+    public void downloadDirectMessages(PrintStream out) throws Exception {
+        data.put("inbox", fetchList("1.1/direct_messages", out));
+        data.put("outbox", fetchList("1.1/direct_messages/sent", out));
+        saveData();
+    }
+
+
+    private VarArray fetchList(String apiPrefix, PrintStream out) throws IOException {
         VarArray result = new VarArray();
         long nextId = -1;
         while (true) {
@@ -57,7 +131,7 @@ public class TweetPrivate {
                 url = url + "&" + "max_id=" + nextId;
             }
 
-            System.out.println("Fetching data from twitter api: " + url);
+            out.println("Fetching data from twitter api: " + url);
             VarArray a = new JSONParser().parseArray(api.jsonAPI(url, ""));
             if (a.isEmpty()) {
                 break;
@@ -65,25 +139,13 @@ public class TweetPrivate {
             result.addAll(a);
             nextId = a.get(a.size() - 1).getLong("id") - 1;
         }
-
-        System.out.println("Writing to: " + file);
-        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-        try {
-            new JSONWriter(writer).writeVariant(result);
-        } finally {
-            writer.close();
-        }
-    }
-
-
-    public Variant getMyInfo() throws IOException {
-        return new JSONParser().parseJson(new FileInputStream(inbox)).get(0).get("recipient");
+        return result;
     }
 
 
     public VarObject getConversationStats() throws IOException {
         VarObject m = new VarObject();
-        for (Variant item : new JSONParser().parseJson(new FileInputStream(inbox)).asList()) {
+        for (Variant item : loadData("inbox").asList()) {
             String id = item.get("sender_id").toString();
             VarObject stat = (VarObject) m.getOrNull(id);
             if (stat == null) {
@@ -93,7 +155,7 @@ public class TweetPrivate {
             updateLast(stat, item, "inCount", "inLast");
         }
 
-        for (Variant item : new JSONParser().parseJson(new FileInputStream(outbox)).asList()) {
+        for (Variant item : loadData("outbox").asList()) {
             String id = item.get("recipient_id").toString();
             VarObject stat = (VarObject) m.getOrNull(id);
             if (stat == null) {
@@ -123,7 +185,7 @@ public class TweetPrivate {
         List<Map<String, Object>> list = VarArray.newNormalizeList();
         VarArray a = (VarArray) Variant.wrap(list);
 
-        for (Variant item : new JSONParser().parseJson(new FileInputStream(inbox)).asList()) {
+        for (Variant item : loadData("inbox").asList()) {
             if (item.getLong("sender_id") != id) {
                 continue;
             }
@@ -134,7 +196,7 @@ public class TweetPrivate {
             a.add(record);
         }
 
-        for (Variant item : new JSONParser().parseJson(new FileInputStream(outbox)).asList()) {
+        for (Variant item : loadData("outbox").asList()) {
             if (item.getLong("recipient_id") != id) {
                 continue;
             }

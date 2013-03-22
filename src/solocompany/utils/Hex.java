@@ -1,17 +1,12 @@
 /*
  * Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
  */
-
-/**
- * Date: 2003-7-22
- * Time: 17:14:40
- * @author William Leung/lwr@tebie.com
- * @version 1.0
- */
 package solocompany.utils;
 
 /**
  * Static methods for translating hex strings to byte arrays and vice-versa.
+ *
+ * @author <a href="mailto:williamleung2006@gmail.com">William Leung</a>
  */
 public class Hex {
 
@@ -78,8 +73,7 @@ public class Hex {
     /**
      * Translates the specified hex character to integer.
      *
-     * @throws IllegalArgumentException if c
-     *                                  is not a standard hex character {0~9|a~f|A~F}.
+     * @throws IllegalArgumentException if c is not a standard hex character {0~9|a~f|A~F}.
      */
     private static int hexToInt(char c) {
         if (c >= '0' && c <= '9') {

@@ -4,10 +4,9 @@
 
 package solocompany.app.twp;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import solocompany.json.JSONParser;
-import solocompany.utils.IOUtils;
 import solocompany.var.VarObject;
 import solocompany.var.Variant;
 
@@ -25,31 +24,48 @@ public class TweetPrivateTest {
     PrintStream out = System.out;
 
 
+    @Before
+    public void setUp() throws Exception {
+        tp.saveData = true;
+    }
+
+
     @Test
     @Ignore
     public void downloadDirectMessages() throws Exception {
-        tp.downloadDirectMessages();
+        tp.downloadDirectMessages(out);
+        dumpDirectMessagesStats();
+    }
+
+
+    @Test
+    @Ignore
+    public void updateProfile() throws Exception {
+        tp.updateProfile();
+        dumpProfile();
+    }
+
+
+    @Test
+    @Ignore
+    public void dumpProfile() throws Exception {
+        out.println(tp.getProfile().getDebugInfo());
     }
 
 
     @Test
     @Ignore
     public void dumpDirectMessagesInboxOneRecord() throws Exception {
-        out.println(new JSONParser().parseArray(IOUtils.fileToString(tp.inbox, "UTF-8")).get(0).getDebugInfo());
+        tp.loadData();
+        out.println(tp.data.get("inbox").get(0).getDebugInfo());
     }
 
 
     @Test
     @Ignore
     public void dumpDirectMessagesOutboxOneRecord() throws Exception {
-        out.println(new JSONParser().parseArray(IOUtils.fileToString(tp.outbox, "UTF-8")).get(0).getDebugInfo());
-    }
-
-
-    @Test
-    @Ignore
-    public void dumpMyInfo() throws Exception {
-        out.println(tp.getMyInfo().getDebugInfo());
+        tp.loadData();
+        out.println(tp.data.get("outbox").get(0).getDebugInfo());
     }
 
 

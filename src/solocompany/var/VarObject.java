@@ -111,6 +111,11 @@ public class VarObject extends Variant {
     }
 
 
+    public void putAll(VarObject m) {
+        impl.putAll(m.impl);
+    }
+
+
     @NotNull
     public VarObject copyMap() {
         return new VarObject(new LinkedHashMap<String, Variant>(impl));
