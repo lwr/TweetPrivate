@@ -26,7 +26,6 @@
         setCookie(response, "tp_current_token", null);
         setCookie(response, "tp_current_token_checksum", null);
         if (tc.getCurrentToken() != null) {
-            tc.getCurrentToken().revoke();
             tc.setCurrentToken(null);
         }
 
