@@ -2,7 +2,8 @@
   ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
   --%>
 
-<%@ page session="false" contentType="text/html;charset=UTF-8" language="java" %>
+<%@ tag pageEncoding="UTF-8" language="java" %>
 <%@ include file="/WEB-INF/include/prelude.jspf" %>
-<ROOT:restoreToken />
-<% out.clear(); %>
+<c:if test="${tp == null}">
+    <c:redirect url="/" />
+</c:if>

@@ -50,13 +50,13 @@ public class VarArrayTest extends AbstractTestList {
         array.add(Variant.wrap(5.0f));
 
 
-        List<Object> list = array.normalize();
-        List<Object> sublist = list.subList(1, 4);
+        List<Object> list = assertList(array);
+        List<Object> subList = list.subList(1, 4);
 
-        assertEquals(Arrays.asList((Object) 2, 3L, 4.0d), sublist);
+        assertEquals(Arrays.asList((Object) 2, 3L, 4.0d), subList);
 
-        VarArray subarray = (VarArray) Variant.wrap(sublist);
-        assertEquals(Arrays.asList((Object) 2, 3L, 4.0d), subarray.normalize());
+        VarArray subArray = (VarArray) Variant.wrap(subList);
+        assertEquals(Arrays.asList((Object) 2, 3L, 4.0d), assertList(subArray));
     }
 
 
@@ -64,14 +64,23 @@ public class VarArrayTest extends AbstractTestList {
         VarArray array = new VarArray();
         array.set(0, "1");
         array.setSize(2);
-        assertEquals(Arrays.asList((Object) "1", null), array.normalize());
+        assertEquals(Arrays.asList((Object) "1", null), assertList(array));
         array.set(1, "2");
         array.set(2, "3");
-        assertEquals(Arrays.asList((Object) "1", "2", "3"), array.normalize());
+        assertEquals(Arrays.asList((Object) "1", "2", "3"), assertList(array));
         array.setSize(3);
-        assertEquals(Arrays.asList((Object) "1", "2", "3"), array.normalize());
+        assertEquals(array.getList(), array.normalize());
+        assertEquals(Arrays.asList((Object) "1", "2", "3"), assertList(array));
         array.setSize(2);
-        assertEquals(Arrays.asList((Object) "1", "2"), array.normalize());
+        assertEquals(array.getList(), array.normalize());
+        assertEquals(Arrays.asList((Object) "1", "2"), assertList(array));
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private static List<Object> assertList(Variant array) {
+        assertEquals(array.getList(), array.normalize());
+        return (List<Object>) array.normalize();
     }
 
 

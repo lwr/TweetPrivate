@@ -1,14 +1,53 @@
-<%@ tag pageEncoding="UTF-8" language="java" %>
-<%@ include file="/WEB-INF/include/prelude.jspf" %>
 <%--
   ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
   --%>
 
-<%
-    solocompany.app.twp.TweetPrivate tp = tc.getCurrentToken().getTweetPrivate();
-%>
+<%@ tag pageEncoding="UTF-8" language="java" %>
+<%@ include file="/WEB-INF/include/prelude.jspf" %>
+<c:if test="${param.action == 'dm_download_temp' || param.action == 'dm_download_save'}">
+    <p>
+        Message downloading...
+    </p>
+    <blockquote>
+        <pre><%
+            if ("dm_download_save".equals(request.getParameter("action"))) {
+                tp.setSaveData();
+            }
+            //noinspection UnhandledExceptionInJSP
+            tp.downloadDirectMessages(new java.io.PrintWriter(out, true));
+        %></pre>
+    </blockquote>
+    <p>
+        Download finished: totally
+            ${fn:length(tp.normalizedData.inbox)} income messages,
+            ${fn:length(tp.normalizedData.outbox)} sent messages
+    </p>
+    <p>
+        <a href="index.jsp">Refresh now</a>
+    </p>
+    <%
+        //noinspection ConstantConditions
+        if (tp != null) { // always true, just hack IDEA for badly annoying warnings
+            //noinspection UnhandledExceptionInJSP
+            throw new SkipPageException();
+        }
+    %>
+</c:if>
+<c:if test="${tp.normalizedData.inbox == null}">
+    <p>
+        Your direct messages are not downloaded yet.
+    </p>
+    <ul>
+        <li>
+            <a href="?action=dm_download_temp">Download temporary</a>
+        </li>
+        <li>
+            <a href="?action=dm_download_save">Download and save to server</a>
+        </li>
+    </ul>
+</c:if>
 <div class="body_parent">
-    <c:forEach items="<%= tp.getConversationStats().normalize() %>" var="entry">
+    <c:forEach items="${tp.conversationStats.map}" var="entry">
         <c:set var="id" value="${entry.key}" />
         <c:set var="item" value="${entry.value}" />
         <c:set var="nameX" value="${fn:escapeXml(item['name'])}" />

@@ -1,13 +1,13 @@
+<%--
+  ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
+  --%>
+
 <%@ tag pageEncoding="UTF-8" language="java" %>
 <%@ tag import=" solocompany.app.twp.AccessToken,
                  solocompany.oauth.LightweightTwitterAPI,
                  solocompany.utils.URLUtils,
                  solocompany.var.VarObject" %>
 <%@ include file="/WEB-INF/include/prelude.jspf" %>
-<%--
-  ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
-  --%>
-
 <%!
     static void setCookie(HttpServletResponse response, String name, String value) {
         Cookie cookie;
@@ -68,6 +68,10 @@
 
             //noinspection UnhandledExceptionInJSP
             throw new SkipPageException();
+        }
+    } else if ("update_status".equals(request.getParameter("action"))) {
+        if (tc.getCurrentToken() != null) {
+            tc.getCurrentToken().getTweetPrivate().updateProfile();
         }
     }
     out.clear();

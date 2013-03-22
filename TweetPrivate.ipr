@@ -59,6 +59,12 @@
       <element module="All" copyright="solocompany" />
     </module2copyright>
   </component>
+  <component name="CppTools.Loader" reportImplicitCastToBool="false" reportNameReferencedOnce="false" version="3" compilerSelect="AUTO" />
+  <component name="CssXFireSettings">
+    <general autoClear="false" autoExpand="false" />
+    <strategy useRoutes="false" mediaReduce="false" fileReduce="false" currentDocumentsReduce="false" resolveVariables="true" resolveMixins="true" />
+    <routes />
+  </component>
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
@@ -1193,6 +1199,7 @@
         <inspection_tool class="JNDIResource" enabled="false" level="WARNING" enabled_by_default="false">
           <option name="insideTryAllowed" value="false" />
         </inspection_tool>
+        <inspection_tool class="JNIImplementations" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="JSAccessibilityCheck" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="JSBitwiseOperatorUsage" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="JSCheckFunctionSignatures" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
@@ -1493,6 +1500,7 @@
           <option name="checkDivision" value="false" />
         </inspection_tool>
         <inspection_tool class="NakedNotify" enabled="false" level="WARNING" enabled_by_default="false" />
+        <inspection_tool class="NativeJavaMethods" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="NativeMethods" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="NegatedConditional" enabled="false" level="WARNING" enabled_by_default="false">
           <option name="m_ignoreNegatedNullComparison" value="true" />
@@ -2439,6 +2447,7 @@
         <inspection_tool class="UnusedCatchParameterJS" enabled="false" level="WARNING" enabled_by_default="false">
           <option name="m_ignoreCatchBlocksWithComments" value="false" />
         </inspection_tool>
+        <inspection_tool class="UnusedCppSymbol" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="UnusedDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ADD_MAINS_TO_ENTRIES" value="true" />
           <option name="ADD_APPLET_TO_ENTRIES" value="true" />

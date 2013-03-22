@@ -132,11 +132,6 @@ public class VarObject extends Variant {
     }
 
 
-    public static VarObject emptyMap() {
-        return new VarObject(Collections.<String, Variant>emptyMap());
-    }
-
-
     @NotNull
     private static final Map<String, String> DEFAULT_PROTECTING_MAP = new HashMap<String, String>();
 

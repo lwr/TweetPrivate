@@ -88,7 +88,7 @@ public class JSONWriter extends VariantWriter {
     /**
      * Write a statement wihch declares a variable.
      * <blockquote><code>
-     *  var variable [ = value ];
+     * var variable [ = value ];
      * </code></blockquote>
      */
     @SuppressWarnings({"JavaDoc"})
@@ -115,7 +115,7 @@ public class JSONWriter extends VariantWriter {
             out.append('{');
             writeln();
             boolean first = true;
-            for (Map.Entry<String, Variant> e : var.getMap().entrySet()) {
+            for (Map.Entry<String, Variant> e : var.varObject().entrySet()) {
                 if (first) {
                     first = false;
                 } else {
@@ -131,7 +131,7 @@ public class JSONWriter extends VariantWriter {
         } else if (var.isArrayType()) {
             out.append('[');
             boolean first = true;
-            for (Variant item : var.asList()) {
+            for (Variant item : var.varList()) {
                 if (first) {
                     first = false;
                 } else {

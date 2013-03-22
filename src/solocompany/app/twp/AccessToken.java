@@ -7,9 +7,7 @@ package solocompany.app.twp;
 import solocompany.oauth.LightweightTwitterAPI;
 import solocompany.utils.Hex;
 
-import java.io.*;
 import java.security.MessageDigest;
-import java.util.*;
 
 /**
  * AccessToken.
@@ -71,10 +69,5 @@ public class AccessToken {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-
-    public Map<String, Object> getProfile() throws IOException {
-        return getTweetPrivate().getProfile().normalize();
     }
 }

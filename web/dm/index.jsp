@@ -1,10 +1,9 @@
-<%@ page pageEncoding="UTF-8" %>
-<%@ include file="/WEB-INF/include/pageDefaultsCheck.jspf" %>
-
 <%--
   ~ Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
   --%>
 
+<%@ page pageEncoding="UTF-8" %>
+<%@ include file="/WEB-INF/include/pageDefaultsCheck.jspf" %>
 <html>
 <head>
     <title>TweetPrivate PProject - Direct Messages</title>

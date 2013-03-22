@@ -26,14 +26,14 @@ public class TweetPrivateTest {
 
     @Before
     public void setUp() throws Exception {
-        tp.saveData = true;
+        tp.setSaveData();
     }
 
 
     @Test
     @Ignore
     public void downloadDirectMessages() throws Exception {
-        tp.downloadDirectMessages(out);
+        tp.downloadDirectMessages(new PrintWriter(out));
         dumpDirectMessagesStats();
     }
 
@@ -106,7 +106,7 @@ public class TweetPrivateTest {
 
 
     private void displayConversation(long id) throws Exception {
-        for (Variant record : tp.getConversation(id).asList()) {
+        for (Variant record : tp.getConversation(id).varList()) {
             out.println(formatDate(record.getLong("date")) + " - " + record.get("type"));
             out.println("  " + record.get("text"));
         }

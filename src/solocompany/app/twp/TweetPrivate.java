@@ -61,34 +61,34 @@ public class TweetPrivate {
     }
 
 
+    public VarObject getProfile() throws IOException {
+        if (!loadData().containsKey("profile")) {
+            updateProfile();
+        }
+        return data.get("profile").varObject();
+    }
+
+
     public void updateProfile() throws IOException {
-        data.put("profile", new JSONParser().parseJson(api.jsonAPI("1.1/account/verify_credentials", "")).getMap());
+        data.put("profile", new JSONParser().parseJson(api.jsonAPI("1.1/account/verify_credentials", "")).varObject());
         saveData();
     }
 
 
-    public VarObject getProfile() throws IOException {
-        if (!loadData("profile").isObjectType()) {
-            updateProfile();
-        }
-        return data.get("profile").getMap();
+    public void setSaveData() {
+        this.saveData = true;
     }
 
 
-    private Variant loadData(String key) throws IOException {
-        if (!data.containsKey(key)) {
-            loadData();
+    VarObject loadData() throws IOException {
+        if (dataLoaded) {
+            return data;
         }
-        return data.get(key);
-    }
-
-
-    void loadData() throws IOException {
         if (getDataFile().isFile()) {
             saveData = true;
             InputStream in = new FileInputStream(getDataFile());
             try {
-                VarObject map = new JSONParser().parseJson(in).getMap();
+                VarObject map = new JSONParser().parseJson(in).varObject();
                 map.putAll(data);
                 data = map;
             } finally {
@@ -96,13 +96,12 @@ public class TweetPrivate {
             }
         }
         dataLoaded = true;
+        return data;
     }
 
 
     void saveData() throws IOException {
-        if (!dataLoaded) {
-            loadData();
-        }
+        loadData();
         if (saveData) {
             System.out.println("Writing to: " + getDataFile());
             Writer os = new OutputStreamWriter(new FileOutputStream(getDataFile()), "UTF-8");
@@ -115,14 +114,18 @@ public class TweetPrivate {
     }
 
 
-    public void downloadDirectMessages(PrintStream out) throws Exception {
+    public Map<String, Object> getNormalizedData() throws IOException {
+        return loadData().normalize(false);
+    }
+
+    public void downloadDirectMessages(PrintWriter out) throws Exception {
         data.put("inbox", fetchList("1.1/direct_messages", out));
         data.put("outbox", fetchList("1.1/direct_messages/sent", out));
         saveData();
     }
 
 
-    private VarArray fetchList(String apiPrefix, PrintStream out) throws IOException {
+    private VarArray fetchList(String apiPrefix, PrintWriter out) throws IOException {
         VarArray result = new VarArray();
         long nextId = -1;
         while (true) {
@@ -145,7 +148,7 @@ public class TweetPrivate {
 
     public VarObject getConversationStats() throws IOException {
         VarObject m = new VarObject();
-        for (Variant item : loadData("inbox").asList()) {
+        for (Variant item : loadData().get("inbox").varList()) {
             String id = item.get("sender_id").toString();
             VarObject stat = (VarObject) m.getOrNull(id);
             if (stat == null) {
@@ -155,7 +158,7 @@ public class TweetPrivate {
             updateLast(stat, item, "inCount", "inLast");
         }
 
-        for (Variant item : loadData("outbox").asList()) {
+        for (Variant item : loadData().get("outbox").varList()) {
             String id = item.get("recipient_id").toString();
             VarObject stat = (VarObject) m.getOrNull(id);
             if (stat == null) {
@@ -168,7 +171,7 @@ public class TweetPrivate {
     }
 
     private VarObject initialStat(Variant recipient) {
-        VarObject stat = recipient.getMap().copyMap();
+        VarObject stat = recipient.varObject().copyMap();
         stat.put("inCount", 0);
         stat.put("outCount", 0);
         return stat;
@@ -185,7 +188,7 @@ public class TweetPrivate {
         List<Map<String, Object>> list = VarArray.newNormalizeList();
         VarArray a = (VarArray) Variant.wrap(list);
 
-        for (Variant item : loadData("inbox").asList()) {
+        for (Variant item : loadData().get("inbox").varList()) {
             if (item.getLong("sender_id") != id) {
                 continue;
             }
@@ -196,7 +199,7 @@ public class TweetPrivate {
             a.add(record);
         }
 
-        for (Variant item : loadData("outbox").asList()) {
+        for (Variant item : loadData().get("outbox").varList()) {
             if (item.getLong("recipient_id") != id) {
                 continue;
             }

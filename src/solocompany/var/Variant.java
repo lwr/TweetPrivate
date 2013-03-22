@@ -21,7 +21,29 @@ public abstract class Variant {
 
 
     @NotNull
-    public List<Variant> asList() {
+    public VarObject varObject() {
+        if (this instanceof VarObject) {
+            return ((VarObject) this);
+        } else {
+            throw new IllegalStateException("Not structural type: " + getDebugInfo());
+        }
+    }
+
+
+    @NotNull
+    public Map<String, Object> getMap() {
+        if (this instanceof VarObject) {
+            return ((VarObject) this).normalize();
+        } else if (this instanceof VarNull) {
+            return Collections.emptyMap();
+        } else {
+            throw new IllegalStateException("Not structural type: " + getDebugInfo());
+        }
+    }
+
+
+    @NotNull
+    public List<Variant> varList() {
         if (this instanceof VarArray) {
             return Collections.checkedList(((VarArray) this).impl, Variant.class);
         } else if (this instanceof VarNull) {
@@ -33,13 +55,14 @@ public abstract class Variant {
 
 
     @NotNull
-    public VarObject getMap() {
-        if (this instanceof VarObject) {
-            return (VarObject) this;
+    public List<Object> getList() {
+        if (this instanceof VarArray) {
+            return ((VarArray) this).normalize();
         } else if (this instanceof VarNull) {
-            return VarObject.emptyMap();
+
+            return Collections.emptyList();
         } else {
-            throw new IllegalStateException("Not map type: " + getDebugInfo());
+            return Collections.singletonList(normalize());
         }
     }
 
@@ -88,7 +111,7 @@ public abstract class Variant {
 
     @Nullable
     public Variant getOrNull(@Nullable String key) {
-        throw new IllegalStateException("Not Structural type: " + getDebugInfo());
+        return VarNull.INSTANCE;
     }
 
 
@@ -106,7 +129,6 @@ public abstract class Variant {
 
 
     public Object normalize(boolean modifiable) { return normalize(); }
-
 
     Variant deepCopyIfRequired() {
         if (this instanceof VarObject) {
