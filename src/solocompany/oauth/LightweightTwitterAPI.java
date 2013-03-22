@@ -35,20 +35,6 @@ public class LightweightTwitterAPI {
     }
 
 
-    private static void configProxy(final List<Proxy> proxyList) {
-        ProxySelector.setDefault(new ProxySelector() {
-            @Override
-            public List<Proxy> select(URI uri) {
-                return proxyList;
-            }
-
-            @Override
-            public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-            }
-        });
-    }
-
-
     public String jsonAPI(String type, String body) throws IOException {
         String qLeft = type;
         String query = "";
@@ -70,7 +56,7 @@ public class LightweightTwitterAPI {
         ProxySelector proxySelector = null;
         if (config != null && config.proxyList != null) {
             proxySelector = ProxySelector.getDefault();
-            configProxy(config.proxyList);
+            ProxySelector.setDefault(getProxySelector(config.proxyList, proxySelector));
         }
 
         try {
@@ -80,5 +66,23 @@ public class LightweightTwitterAPI {
                 ProxySelector.setDefault(proxySelector);
             }
         }
+    }
+
+
+    static ProxySelector getProxySelector(final List<Proxy> proxyList, final ProxySelector fallback) {
+        return new ProxySelector() {
+            @Override
+            public List<Proxy> select(URI uri) {
+                if (uri.getHost().equals("api.twitter.com")) {
+                    return proxyList;
+                }
+                return fallback.select(uri);
+            }
+
+            @Override
+            public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+                fallback.connectFailed(uri, sa, ioe);
+            }
+        };
     }
 }

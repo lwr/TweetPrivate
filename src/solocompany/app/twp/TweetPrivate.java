@@ -71,7 +71,7 @@ public class TweetPrivate {
 
 
     public void updateProfile() throws IOException {
-        data.put("profile", new JSONParser().parseJson(api.jsonAPI("1.1/account/verify_credentials", "")).varObject());
+        data.put("profile", new JSONParser().parseObject(api.jsonAPI("1.1/account/verify_credentials", "")));
         saveData();
     }
 
