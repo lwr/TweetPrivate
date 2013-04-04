@@ -4,6 +4,10 @@
 
 package solocompany.oauth;
 
+import org.jetbrains.annotations.NotNull;
+import solocompany.utils.SSLHelper;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -15,7 +19,10 @@ import java.util.*;
  */
 public class LightweightTwitterAPI {
 
+    @NotNull
     final OAuthTool oAuthTool;
+
+    @NotNull
     final TwitterConfig config;
 
 
@@ -54,13 +61,19 @@ public class LightweightTwitterAPI {
 
     public String invokeAPI(String type, String body, String oAuthHeaders) throws IOException {
         ProxySelector proxySelector = null;
-        if (config != null && config.proxyList != null) {
+        if (config.proxyList != null) {
             proxySelector = ProxySelector.getDefault();
             ProxySelector.setDefault(getProxySelector(config.proxyList, proxySelector));
         }
 
         try {
-            return oAuthTool.httpRequest(new URL("https://api.twitter.com/" + type), body, oAuthHeaders);
+            URL url = new URL("https://api.twitter.com/" + type);
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            if (config.getBoolean("acceptAllCerts")) {
+                conn.setSSLSocketFactory(SSLHelper.getDummySSLSocketFactory());
+                // conn.setHostnameVerifier(SSLHelper.getDummyHostnameVerifier());
+            }
+            return oAuthTool.httpRequest(conn, body, oAuthHeaders);
         } finally {
             if (proxySelector != null) {
                 ProxySelector.setDefault(proxySelector);

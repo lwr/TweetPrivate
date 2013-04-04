@@ -17,6 +17,7 @@ import java.util.*;
  */
 public class TwitterConfig {
 
+    protected final Properties properties = new Properties();
     protected OAuthTool oAuth;
     protected List<Proxy> proxyList;
 
@@ -118,7 +119,7 @@ public class TwitterConfig {
         if (!getAppKeyProperties().isFile()) {
             return;
         }
-        Properties properties = new Properties();
+
         InputStream in = new FileInputStream(getAppKeyProperties());
         try {
             properties.load(in);
@@ -127,17 +128,15 @@ public class TwitterConfig {
         }
 
 
-        final String consumerKey = properties.getProperty("consumerKey");
-        final String consumerSecret = properties.getProperty("consumerSecret");
+        final String consumerKey = getString("consumerKey");
+        final String consumerSecret = getString("consumerSecret");
         if (consumerKey != null && consumerSecret != null) {
-            this.oAuth = new OAuthTool(consumerKey, consumerSecret,
-                    properties.getProperty("accessToken"),
-                    properties.getProperty("accessSecret"));
+            this.oAuth = new OAuthTool(consumerKey, consumerSecret, getString("accessToken"), getString("accessSecret"));
         }
 
 
-        String proxyType = properties.getProperty("proxyType");
-        String proxyHost = properties.getProperty("proxyHost");
+        String proxyType = getString("proxyType");
+        String proxyHost = getString("proxyHost");
         if ("default".equalsIgnoreCase(proxyType) || "system".equalsIgnoreCase(proxyType)) {
             this.proxyList = null;
 
@@ -152,5 +151,13 @@ public class TwitterConfig {
                     Integer.parseInt(proxyHost.substring(proxyHost.indexOf(':') + 1))
             )));
         }
+    }
+
+    public boolean getBoolean(String key) {
+        return Boolean.parseBoolean(getString(key));
+    }
+
+    public String getString(String key) {
+        return properties.getProperty(key);
     }
 }

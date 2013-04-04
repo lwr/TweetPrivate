@@ -51,18 +51,29 @@ public class OAuthTool {
     }
 
 
-    public String httpRequest(URL url, String body, String oAuthHeaders) throws IOException {
-        HttpURLConnection conn = setupConnection((HttpURLConnection) url.openConnection(), body, oAuthHeaders);
+    public String httpRequest(HttpURLConnection conn, String body, String oAuthHeaders) throws IOException {
+        setupConnection(conn, body, oAuthHeaders);
         try {
             return IOUtils.allToString(conn.getInputStream(), "UTF-8");
         } catch (IOException e) {
-            IOUtils.allBytes(conn.getErrorStream(), System.err);
+            try {
+                InputStream errorStream = conn.getErrorStream();
+                if (errorStream != null) {
+                    try {
+                        IOUtils.allBytes(errorStream, System.err);
+                    } finally {
+                        errorStream.close();
+                    }
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             throw e;
         }
     }
 
 
-    public HttpURLConnection setupConnection(HttpURLConnection conn, String body, String oAuthHeaders) throws IOException {
+    public void setupConnection(HttpURLConnection conn, String body, String oAuthHeaders) throws IOException {
         if ((oAuthHeaders != null) || (body != null && body.length() > 0)) {
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
@@ -75,7 +86,6 @@ public class OAuthTool {
             conn.getOutputStream().write(body.getBytes("UTF-8"));
             conn.getOutputStream().flush();
         }
-        return conn;
     }
 
 

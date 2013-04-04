@@ -30,7 +30,7 @@ public abstract class VariantWriter {
     /**
      * Constructor sets the <code>ResponseWriter</code>.
      *
-     * @param out the respons writer
+     * @param out the response writer
      */
     public VariantWriter(Appendable out) {
         this.out = out;

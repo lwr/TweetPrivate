@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2013. All rights Reserved by williamleung2006@gmail.com
  */
+
 package solocompany.utils;
 
 /**

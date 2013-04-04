@@ -11,6 +11,7 @@ package solocompany.utils;
  */
 public class LangUtils {
 
+    @SuppressWarnings("SpellCheckingInspection")
     public static <T> T[] concatArray(Class<T> componentType, T[] a1, T... a2) {
         @SuppressWarnings("unchecked")
         T[] result = (T[]) java.lang.reflect.Array.newInstance(componentType, a1.length + a2.length);

@@ -47,6 +47,20 @@ public class IOUtils {
     }
 
 
+    public static byte[] allBytes(InputStream in) throws IOException {
+        if (in instanceof ByteArrayInputStream) {
+            byte[] b = new byte[in.available()];
+            //noinspection ResultOfMethodCallIgnored
+            in.read(b);
+            return b;
+        }
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        allBytes(in, bos);
+        return bos.toByteArray();
+    }
+
+
     public static void allBytes(InputStream is, OutputStream os) throws IOException {
         int size = 16384;
         byte[] b = new byte[size];

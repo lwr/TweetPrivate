@@ -86,10 +86,10 @@ public class JSONWriter extends VariantWriter {
     }
 
     /**
-     * Write a statement wihch declares a variable.
-     * <blockquote><code>
+     * Write a statement witch declares a variable.
+     * <BlockQuote><code>
      * var variable [ = value ];
-     * </code></blockquote>
+     * </code></BlockQuote>
      */
     @SuppressWarnings({"JavaDoc"})
     public void writeVarStatement(String name, Variant value) throws IOException {
@@ -173,6 +173,7 @@ public class JSONWriter extends VariantWriter {
     }
 
 
+    @SuppressWarnings("ConstantConditions")
     public void writeString(String s) throws IOException {
         char quoteChar = useDoubleQuote ? '"' : '\'';
         writeSpecial(quoteChar);

@@ -147,6 +147,7 @@ public class VarObject extends Variant {
     }
 
 
+    @SuppressWarnings("ConstantConditions")
     public String getDebugInfo(int indentLevel, @NotNull Map<String, String> protectingMap) {
         StringBuilder buf = new StringBuilder();
         buf.append("[").append(getTypeName()).append(":(size=").append(size()).append("):...]");
