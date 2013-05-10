@@ -194,4 +194,20 @@ public class VarObject extends Variant {
         }
         return buf.toString();
     }
+
+
+    @NotNull
+    public static VarObject newFromKvList(@NotNull Object... pairs) {
+        // check if even size
+        if ((pairs.length & 1) != 0) {
+            throw new IllegalArgumentException();
+        }
+
+        VarObject result = new VarObject();
+        // do other preconditions checking and converting
+        for (int i = 0; i < pairs.length; i += 2) {
+            result.put((String) pairs[i], Variant.wrap(pairs[i + 1]));
+        }
+        return result;
+    }
 }

@@ -1118,6 +1118,7 @@
         <inspection_tool class="IncompatibleMask" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="IncompatibleMaskJS" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="InconsistentLanguageLevel" enabled="false" level="WARNING" enabled_by_default="false" />
+        <inspection_tool class="InconsistentLineSeparators" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="InconsistentResourceBundle" enabled="true" level="ERROR" enabled_by_default="true">
           <option name="REPORT_MISSING_TRANSLATIONS" value="true" />
           <option name="REPORT_INCONSISTENT_PROPERTIES" value="true" />
@@ -1725,6 +1726,7 @@
         <inspection_tool class="PhpCSValidationInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpConstantReassignmentInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpDeprecationInspection" enabled="false" level="INFO" enabled_by_default="false" />
+        <inspection_tool class="PhpDivisionByZeroInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpDocMissingReturnTagInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpDocMissingThrowsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpDocSignatureInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
@@ -1743,6 +1745,7 @@
         <inspection_tool class="PhpMissingDocCommentInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpNonCompoundUseInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpParamsInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="PhpPassByRefInspection" enabled="false" level="ERROR" enabled_by_default="false" />
         <inspection_tool class="PhpRedundantClosingTagInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpSillyAssignmentInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="PhpToStringImplementationInspection" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -2089,6 +2092,7 @@
           <option name="checkTestFiles" value="false" />
         </inspection_tool>
         <inspection_tool class="SpringFactoryMethodInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+        <inspection_tool class="SpringHandlersSchemasHighlighting" enabled="false" level="ERROR" enabled_by_default="false" />
         <inspection_tool class="SpringIncorrectResourceTypeInspection" enabled="false" level="ERROR" enabled_by_default="false" />
         <inspection_tool class="SpringInjectionValueConsistencyInspection" enabled="true" level="ERROR" enabled_by_default="true" />
         <inspection_tool class="SpringInjectionValueStyleInspection" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -2531,6 +2535,7 @@
         <inspection_tool class="VtlTypesInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="W3CssValidation" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="myCssVersion" value="css3" />
+          <option name="myIgnoreVendorSpecificProperties" value="false" />
         </inspection_tool>
         <inspection_tool class="WSReferenceInspection" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="WaitCalledOnCondition" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -2775,6 +2780,7 @@
   </component>
   <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="WebApp" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6">
+      <option name="COMMON_VM_ARGUMENTS" value="-Dfile.encoding=UTF8" />
       <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>

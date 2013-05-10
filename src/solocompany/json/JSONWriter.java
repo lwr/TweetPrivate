@@ -4,7 +4,7 @@
 
 package solocompany.json;
 
-import solocompany.utils.StringUtils;
+import solocompany.utils.XSSCommon;
 import solocompany.var.Variant;
 import solocompany.var.VariantWriter;
 
@@ -218,7 +218,7 @@ public class JSONWriter extends VariantWriter {
             case '<':
                 // </SCRIPT 序列需要特殊处理为 ... <' + '/SCRIPT ...
                 if (!inlineMode && !escapeXml
-                        && StringUtils.startsWithIgnoreCase(s, i + 1, "/SCRIPT")) {
+                        && XSSCommon.startsWithIgnoreCase(s, i + 1, "/SCRIPT")) {
                     out.append('<');
                     out.append(quoteChar);
                     out.append('+');
